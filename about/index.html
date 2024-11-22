@@ -22,10 +22,12 @@
   <meta name="keywords" content="">
   
     <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="https://smile-smith.github.io/archives/2024/index.html">
+<meta property="og:title" content="关于">
+<meta property="og:url" content="https://smile-smith.github.io/about/index.html">
 <meta property="og:site_name" content="一条咸鱼的一生">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-22T08:20:20.000Z">
+<meta property="article:modified_time" content="2024-11-22T08:21:37.926Z">
 <meta property="article:author" content="梦想的鱼">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -33,11 +35,17 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>归档 - 一条咸鱼的一生</title>
+  <title>关于 - 一条咸鱼的一生</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
 
@@ -193,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="归档"></span>
+            <span id="subtitle" data-typed-text="关于"></span>
           
         </div>
 
@@ -215,26 +223,90 @@
         <div id="board"
           >
           
+            <div class="about-avatar">
+              <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
+            </div>
+          
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">共计 1 篇文章</p>
-  <hr>
-  
-  
-    
+<div class="text-center">
+  <div class="about-info">
+    <div class="about-name">想睡觉的工具人</div>
+    <div class="about-intro">咸鱼的栖息之地，让我休息一下zzz</div>
+    <div class="about-icons">
       
-      <p class="h5">2024</p>
-    
-    <a href="/2024/11/22/hello-world/" class="list-group-item list-group-item-action">
-      <time>11-22</time>
-      <div class="list-group-item-title">Hello World</div>
-    </a>
-  
+        
+        
+        
+        <a href=https://github.com/smile-smith class="
+           hint--bottom hint--rounded"
+           aria-label="GitHub"
+           target="_blank"
+        >
+          <i class="iconfont icon-github-fill" aria-hidden="true"></i>
+          
+        </a>
+      
+        
+        
+        
+        <a href=https://blog.csdn.net/weixin_51792671 class="
+           hint--bottom hint--rounded"
+           aria-label="CSDN"
+           target="_blank"
+        >
+          <i class="iconfont icon-copyright" aria-hidden="true"></i>
+          
+        </a>
+      
+        
+        
+        
+        <a href=https://bilibili.com class="
+           hint--bottom hint--rounded"
+           aria-label="BiliBili"
+           target="_blank"
+        >
+          <i class="iconfont icon-bilibili" aria-hidden="true"></i>
+          
+        </a>
+      
+    </div>
+  </div>
 </div>
+
+<article class="about-content page-content mt-5">
+  <div class="markdown-body">
+    
+  </div>
+
+  
+</article>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
 
 
 
@@ -394,6 +466,59 @@ setInterval("createtime()",250);
 
 
 
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
 
