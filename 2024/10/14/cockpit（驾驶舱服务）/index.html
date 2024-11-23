@@ -1,0 +1,834 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/title.jpg">
+  <link rel="icon" href="/img/title.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="梦想的鱼">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="cockpit（驾驶舱服务）Cockpit是一个由Red Hat公司赞助的开源（基于GNUL LGPL协议）免费的基于 Web 的服务器图形界面。 使用方法FedoraCockpit默认安装在 Fedora Server 中。要在 Fedora 的其他变体上安装 Cockpit，请使用以下命令。   安装驾驶舱： 1sudo dnf install cockpit -y   启用驾驶舱： 1sud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cockpit（驾驶舱服务）">
+<meta property="og:url" content="https://smile-smith.github.io/2024/10/14/cockpit%EF%BC%88%E9%A9%BE%E9%A9%B6%E8%88%B1%E6%9C%8D%E5%8A%A1%EF%BC%89/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="cockpit（驾驶舱服务）Cockpit是一个由Red Hat公司赞助的开源（基于GNUL LGPL协议）免费的基于 Web 的服务器图形界面。 使用方法FedoraCockpit默认安装在 Fedora Server 中。要在 Fedora 的其他变体上安装 Cockpit，请使用以下命令。   安装驾驶舱： 1sudo dnf install cockpit -y   启用驾驶舱： 1sud">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-37-42-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-41-16-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-41-50-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-42-09-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-42-32-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-42-58-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-43-19-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-44-03-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-44-21-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-44-44-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-45-04-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-45-27-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-46-04-image.png">
+<meta property="article:published_time" content="2024-10-14T13:23:20.000Z">
+<meta property="article:modified_time" content="2024-11-23T06:15:49.096Z">
+<meta property="article:author" content="梦想的鱼">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Red Hat">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://smile-smith.github.io/img/assets/2024-10-14-16-37-42-image.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>cockpit（驾驶舱服务） - </title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"smile-smith.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong></strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="cockpit（驾驶舱服务）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-14 21:23" pubdate>
+          2024年10月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          878 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">cockpit（驾驶舱服务）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="cockpit（驾驶舱服务）"><a href="#cockpit（驾驶舱服务）" class="headerlink" title="cockpit（驾驶舱服务）"></a>cockpit（驾驶舱服务）</h1><p>Cockpit是一个由Red Hat公司赞助的开源（基于GNUL LGPL协议）免费的基于 Web 的服务器图形界面。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="Fedora"><a href="#Fedora" class="headerlink" title="Fedora"></a>Fedora</h3><p>Cockpit<strong>默认安装在 Fedora Server 中</strong>。要在 Fedora 的其他变体上安装 Cockpit，请使用以下命令。</p>
+<ol>
+<li><p> 安装驾驶舱：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> dnf install cockpit -y<br></code></pre></td></tr></table></figure>
+</li>
+<li><p> 启用驾驶舱：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> --now cockpit.socket<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>必要时打开防火墙：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> firewall-cmd --add-service=cockpit<br><span class="hljs-built_in">sudo</span> firewall-cmd --add-service=cockpit --permanent<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Red-Hat-Enterprise-Linux"><a href="#Red-Hat-Enterprise-Linux" class="headerlink" title="Red Hat Enterprise Linux"></a>Red Hat Enterprise Linux</h3><p>Cockpit 可在 Red Hat Enterprise Linux 7 及更高版本中使用。</p>
+<ol>
+<li><p>在 RHEL 7 上，启用<em>Extras</em>存储库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> subscription-manager repos --<span class="hljs-built_in">enable</span> rhel-7-server-extras-rpms<br></code></pre></td></tr></table></figure>
+
+<p>RHEL 8 不需要任何非默认存储库。</p>
+</li>
+<li><p> 安装驾驶舱：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> yum install cockpit -y <br></code></pre></td></tr></table></figure>
+</li>
+<li><p> 启用驾驶舱：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> --now cockpit.socket<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在 RHEL 7 上，或者如果您在 RHEL 8 上使用非默认区域，请打开防火墙：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> firewall-cmd --add-service=cockpit<br><span class="hljs-built_in">sudo</span> firewall-cmd --add-service=cockpit --permanent<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Fedora-Core操作系统"><a href="#Fedora-Core操作系统" class="headerlink" title="Fedora Core操作系统"></a>Fedora Core操作系统</h3><p>标准 Fedora CoreOS 映像不包含 Cockpit 软件包。</p>
+<ol>
+<li><p>将 Cockpit 软件包安装为覆盖 RPM：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rpm-ostree install cockpit-system cockpit-ostree cockpit-podman <br></code></pre></td></tr></table></figure>
+
+<p>根据您的配置，您可能还想使用其他<a target="_blank" rel="noopener" href="https://cockpit-project.org/applications.html"><code>cockpit-*</code>扩展</a>，例如<code>cockpit-kdump</code>或<code>cockpit-networkmanager</code> 。</p>
+<p>如果您有自定义构建的 OSTree，只需在构建中包含相同的包即可。</p>
+</li>
+<li><p> 重新启动</p>
+</li>
+</ol>
+<p>当 CoreOS 计算机仅通过另一台运行 Cockpit 的主机连接时，步骤 1 和 2 就足够了。</p>
+<p>如果您还想运行 Web 服务器来直接登录 CoreOS 主机：</p>
+<ol>
+<li><p>启用基于密码的 SSH 登录，除非您仅使用<a target="_blank" rel="noopener" href="https://cockpit-project.org/guide/latest/sso.html">SSO 登录</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;PasswordAuthentication yes&#x27;</span> | <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> /etc/ssh/sshd_config.d/02-enable-passwords.conf<br><span class="hljs-built_in">sudo</span> systemctl try-restart sshd<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用特权容器（以 root 身份）运行 Cockpit Web 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">podman container runlabel --name cockpit-ws RUN quay.io/cockpit/ws<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>让 Cockpit 在启动时启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">podman container runlabel INSTALL quay.io/cockpit/ws<br>systemctl <span class="hljs-built_in">enable</span> cockpit.service<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h3><p>Cockpit 在 CentOS 7 及更高版本中可用：</p>
+<ol>
+<li><p> 安装驾驶舱：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> yum install cockpit -y <br></code></pre></td></tr></table></figure>
+</li>
+<li><p> 启用驾驶舱：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> --now cockpit.socket<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>必要时打开防火墙：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> firewall-cmd --permanent --zone=public --add-service=cockpit<br><span class="hljs-built_in">sudo</span> firewall-cmd --reload<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Debian"><a href="#Debian" class="headerlink" title="Debian"></a>Debian</h3><p>这些命令需要 POSIX 兼容的 shell，例如<code>bash</code> 。对于其他 shell（例如<code>fish</code> ，请暂时运行<code>bash -i</code> 。</p>
+<p>Cockpit 自版本 10 (Buster) 起在 Debian 中可用。</p>
+<ol>
+<li><p>要获取最新版本，我们建议启用向后<a target="_blank" rel="noopener" href="https://backports.debian.org/">移植存储库</a>（以 root 身份）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">. /etc/os-release<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;deb http://deb.debian.org/debian <span class="hljs-variable">$&#123;VERSION_CODENAME&#125;</span>-backports main&quot;</span> &gt; \<br>   /etc/apt/sources.list.d/backports.list<br>apt update<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>安装或更新包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">apt install -t <span class="hljs-variable">$&#123;VERSION_CODENAME&#125;</span>-backports cockpit -y <br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>更新 Cockpit 相关包和任何依赖项时，请确保如上所述使用<code>-t ...-backports</code> ，以便包含向后移植。</p>
+<h3 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h3><p>这些命令需要 POSIX 兼容的 shell，例如<code>bash</code> 。对于其他 shell（例如<code>fish</code> ，请暂时运行<code>bash -i</code> 。</p>
+<p>Cockpit 可在 Ubuntu 中使用，并<a target="_blank" rel="noopener" href="https://help.ubuntu.com/community/UbuntuBackports">在 LTS 版本的官方向后移植中提供更新版本</a>。</p>
+<p>我们建议从向后移植安装或更新最新版本。该存储库默认启用，但如果您自定义了 apt 源，则可能需要<a target="_blank" rel="noopener" href="https://help.ubuntu.com/community/UbuntuBackports#Enabling_Backports">手动启用它们</a>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">. /etc/os-release<br><span class="hljs-built_in">sudo</span> apt install -t <span class="hljs-variable">$&#123;VERSION_CODENAME&#125;</span>-backports cockpit -y<br></code></pre></td></tr></table></figure>
+
+<p>更新 Cockpit 相关包和任何依赖项时，请确保如上所述使用<code>-t ...-backports</code> ，以便包含向后移植。</p>
+<h3 id="Arch-Linux"><a href="#Arch-Linux" class="headerlink" title="Arch Linux"></a>Arch Linux</h3><p><a target="_blank" rel="noopener" href="https://archlinux.org/packages/extra/x86_64/cockpit/">Cockpit</a>可在<a target="_blank" rel="noopener" href="https://www.archlinux.org/packages/">Arch Linux</a>中使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> pacman -S cockpit<br><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> --now cockpit.socket<br></code></pre></td></tr></table></figure>
+
+<p>如果第一个命令失败并显示“…的数据库文件不存在”，请首先使用<code>sudo pacman -Syu</code>刷新&#x2F;更新您的系统。</p>
+<h2 id="通过Web界面访问"><a href="#通过Web界面访问" class="headerlink" title="通过Web界面访问"></a>通过Web界面访问</h2><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">https:</span><span class="hljs-comment">//IP_ADDRESS_OF_MACHINE:9090</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="登录页"><a href="#登录页" class="headerlink" title="登录页"></a>登录页</h3><ul>
+<li><p>这里通过系统用户进行登录，如系统普通用户”user“，密码为：“user”；</p>
+</li>
+<li><p>普通用户仅拥有，有限的权限，需要进行高级操作时可以进行”提权“</p>
+</li>
+</ul>
+<p><img src="/img/assets/2024-10-14-16-37-42-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="内容概览"><a href="#内容概览" class="headerlink" title="内容概览"></a>内容概览</h3><p><img src="/img/assets/2024-10-14-16-41-16-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="内容日志"><a href="#内容日志" class="headerlink" title="内容日志"></a>内容日志</h3><p><img src="/img/assets/2024-10-14-16-41-50-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="存储页面"><a href="#存储页面" class="headerlink" title="存储页面"></a>存储页面</h3><p><img src="/img/assets/2024-10-14-16-42-09-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="网络页面"><a href="#网络页面" class="headerlink" title="网络页面"></a>网络页面</h3><p><img src="/img/assets/2024-10-14-16-42-32-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="用户账户页面"><a href="#用户账户页面" class="headerlink" title="用户账户页面"></a>用户账户页面</h3><p><img src="/img/assets/2024-10-14-16-42-58-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="系统服务页面"><a href="#系统服务页面" class="headerlink" title="系统服务页面"></a>系统服务页面</h3><p><img src="/img/assets/2024-10-14-16-43-19-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="内核转储页面"><a href="#内核转储页面" class="headerlink" title="内核转储页面"></a>内核转储页面</h3><p><img src="/img/assets/2024-10-14-16-44-03-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="软件更新页面"><a href="#软件更新页面" class="headerlink" title="软件更新页面"></a>软件更新页面</h3><p><img src="/img/assets/2024-10-14-16-44-21-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="应用程序页面"><a href="#应用程序页面" class="headerlink" title="应用程序页面"></a>应用程序页面</h3><p><img src="/img/assets/2024-10-14-16-44-44-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="系统诊断报告页面"><a href="#系统诊断报告页面" class="headerlink" title="系统诊断报告页面"></a>系统诊断报告页面</h3><p><img src="/img/assets/2024-10-14-16-45-04-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="远程终端页面"><a href="#远程终端页面" class="headerlink" title="远程终端页面"></a>远程终端页面</h3><p><img src="/img/assets/2024-10-14-16-45-27-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>SELinux页面（Linux内核安全）</p>
+<p><img src="/img/assets/2024-10-14-16-46-04-image.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="参考网址"><a href="#参考网址" class="headerlink" title="参考网址"></a>参考网址</h2><p>Cockpit官网：<a target="_blank" rel="noopener" href="https://cockpit-project.org/">https://cockpit-project.org/</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Linux/" class="print-no-link">#Linux</a>
+      
+        <a href="/tags/Red-Hat/" class="print-no-link">#Red Hat</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>cockpit（驾驶舱服务）</div>
+      <div>https://smile-smith.github.io/2024/10/14/cockpit（驾驶舱服务）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>梦想的鱼</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              BY-NC-SA 4.0
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/18/Proxmox%20VE%E7%BD%91%E7%BB%9C/" title="Proxmox VE网络">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Proxmox VE网络</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/13/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF/" title="PVE优化">
+                        <span class="hidden-mobile">PVE优化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+ var now = new Date();
+function createtime(){
+   var grt= new Date("11/20/2024 00:00:00");//此处修改你的建站时间或者网站上线时间
+   now.setTime(now.getTime()+250);
+   days = (now - grt ) / 1000 / 60 / 60 / 24;
+   dnum = Math.floor(days);
+   hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+   hnum = Math.floor(hours);
+   if(String(hnum).length ==1 ){
+        hnum = "0" + hnum;
+   }
+   minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+   mnum = Math.floor(minutes);
+   if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+   }
+   seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+   snum = Math.round(seconds);
+   if(String(snum).length ==1 ){
+                snum = "0" + snum;
+   }
+   document.getElementById("timeDate").innerHTML = "本站已安全运行"+dnum+" 天 "; 
+   document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+} //此处自定义显示内容 
+setInterval("createtime()",250);
+</script>
+</div>
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

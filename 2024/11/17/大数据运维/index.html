@@ -1,0 +1,1368 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/title.jpg">
+  <link rel="icon" href="/img/title.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="梦想的鱼">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="大数据运维 技术方案 Hadoop是最受欢迎、最成熟、应用最广的大数据系统架构之一     方案 组件    静态数据的批量处理 Hadoop   流式数据的实时处理 Storm   交互式数据处理 Spark   大数据主流工具   名称 描述    Hadoop 是一个具有分布式存储(HDFS)和分布式计算(MapReduce)的大数据处理框架   ZooKeeper 是Hadoop和HBas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据运维">
+<meta property="og:url" content="https://smile-smith.github.io/2024/11/17/%E5%A4%A7%E6%95%B0%E6%8D%AE%E8%BF%90%E7%BB%B4/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="大数据运维 技术方案 Hadoop是最受欢迎、最成熟、应用最广的大数据系统架构之一     方案 组件    静态数据的批量处理 Hadoop   流式数据的实时处理 Storm   交互式数据处理 Spark   大数据主流工具   名称 描述    Hadoop 是一个具有分布式存储(HDFS)和分布式计算(MapReduce)的大数据处理框架   ZooKeeper 是Hadoop和HBas">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-11-17-10-32-02-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-11-17-16-02-31-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-11-17-16-01-50-image.png">
+<meta property="article:published_time" content="2024-11-17T04:00:20.000Z">
+<meta property="article:modified_time" content="2024-11-23T06:43:36.879Z">
+<meta property="article:author" content="梦想的鱼">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="ZooKeeper">
+<meta property="article:tag" content="Kafka">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="Storm">
+<meta property="article:tag" content="HBase">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://smile-smith.github.io/img/assets/2024-11-17-10-32-02-image.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>大数据运维 - </title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"smile-smith.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong></strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="大数据运维"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-17 12:00" pubdate>
+          2024年11月17日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">大数据运维</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="大数据运维"><a href="#大数据运维" class="headerlink" title="大数据运维"></a>大数据运维</h1><hr>
+<h2 id="技术方案"><a href="#技术方案" class="headerlink" title="技术方案"></a>技术方案</h2><blockquote>
+<p>Hadoop是最受欢迎、最成熟、应用最广的大数据系统架构之一</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">方案</th>
+<th align="center">组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">静态数据的批量处理</td>
+<td align="center">Hadoop</td>
+</tr>
+<tr>
+<td align="center">流式数据的实时处理</td>
+<td align="center">Storm</td>
+</tr>
+<tr>
+<td align="center">交互式数据处理</td>
+<td align="center">Spark</td>
+</tr>
+</tbody></table>
+<h2 id="大数据主流工具"><a href="#大数据主流工具" class="headerlink" title="大数据主流工具"></a>大数据主流工具</h2><table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Hadoop</td>
+<td align="center">是一个具有<code>分布式存储(HDFS)</code>和<code>分布式计算(MapReduce)</code>的大数据处理框架</td>
+</tr>
+<tr>
+<td align="center">ZooKeeper</td>
+<td align="center">是Hadoop和HBase的重要组件；是一个分布式的、开放源码的分布式应用程序协调服务</td>
+</tr>
+<tr>
+<td align="center">HBase</td>
+<td align="center">是一个高可靠性、高拓展性、面向列、可伸缩的分布式结构化存储系统</td>
+</tr>
+<tr>
+<td align="center">Spark</td>
+<td align="center">是专为大规模数据处理而设计的快速通用的计算引擎；<br>是一种与<code>Hadoop</code>相似的开源集群计算环境；</td>
+</tr>
+<tr>
+<td align="center">Hive</td>
+<td align="center">可以存储、查询和分析存储在Hadoop中的大规模数据</td>
+</tr>
+<tr>
+<td align="center">MongoDB</td>
+<td align="center">是一个基于分布式文件存储的数据库</td>
+</tr>
+<tr>
+<td align="center">Kafka</td>
+<td align="center">是一种高吞吐量的分布式发布订阅消息系统</td>
+</tr>
+<tr>
+<td align="center">Storm</td>
+<td align="center">是一个实施的、分布式以及高容错的计算系统</td>
+</tr>
+<tr>
+<td align="center">Flume</td>
+<td align="center">是一种分布式的日志收集框架</td>
+</tr>
+</tbody></table>
+<p><img src="/img/assets/2024-11-17-10-32-02-image.png" srcset="/img/loading.gif" lazyload></p>
+<hr>
+<h2 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h2><h3 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h3><blockquote>
+<p>由<code>HDFS</code>和<code>Mapreduce</code>组成的大数据处理框架；</p>
+<ul>
+<li><p><code>HDFS</code>为海量的数据提供存储功能</p>
+</li>
+<li><p><code>MapReduce</code>为海量的数据提供计算功能</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="版本区别"><a href="#版本区别" class="headerlink" title="版本区别"></a>版本区别</h4><p><img title="" src="/img/assets/2024-11-17-16-02-31-image.png" srcset="/img/loading.gif" lazyload alt="" width="350"><img title="" src="/img/assets/2024-11-17-16-01-50-image.png" srcset="/img/loading.gif" lazyload alt="" width="267"></p>
+<h4 id="组件的服务进程"><a href="#组件的服务进程" class="headerlink" title="组件的服务进程"></a>组件的服务进程</h4><h5 id="HDFS服务进程"><a href="#HDFS服务进程" class="headerlink" title="HDFS服务进程"></a>HDFS服务进程</h5><blockquote>
+<p>工作结构式是：主从结构</p>
+<p>即，主节点<code>NameNnode</code>，从节点<code>DataNode</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">NameNode</th>
+<th align="center">DataNode</th>
+<th align="center">Secondary NameNode</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">负责接收用户的操作请求、维护文件系统的目录结构、管理文件与<code>块(Block)</code>之间的关系，<code>块</code>与DataNode之间的关系</td>
+<td align="center">负责存储文件；文件被分成<code>块</code>，存储在磁盘上</td>
+<td align="center">辅助<code>NameNode</code>工作；用于备份元数据和恢复元数据</td>
+</tr>
+</tbody></table>
+<h5 id="MapReduce和Yarn的服务进程"><a href="#MapReduce和Yarn的服务进程" class="headerlink" title="MapReduce和Yarn的服务进程"></a>MapReduce和Yarn的服务进程</h5><blockquote>
+<p>同样，工作结构也是：主从结构</p>
+<p>即，主节点<code>ResourceManager</code>，从节点<code>NodeManager</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ResourceManager</th>
+<th>NodeManager</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>负责接收客户提交的计算任务，然后把计算任务分配给<code>NodeManageer</code>执行，并监控其执行情况</td>
+<td>复制执行<code>ResourceManager</code>分配的计算任务</td>
+</tr>
+</tbody></table>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">可靠性</td>
+<td align="center">使用<code>位</code>存储和处理数据</td>
+</tr>
+<tr>
+<td align="center"><strong>高拓展性</strong></td>
+<td align="center"><code>计算</code>是在可用的计算机集群之间分配数据并完成计算任务，集群可以无限拓展</td>
+</tr>
+<tr>
+<td align="center"><strong>高效性</strong></td>
+<td align="center">能在节点之间动态的移动数据，并保证各个节点的动态平衡</td>
+</tr>
+<tr>
+<td align="center"><strong>高容错性</strong></td>
+<td align="center">能够自动保存数据的多个副本，并且能够自动将失败的任务重新分配</td>
+</tr>
+<tr>
+<td align="center"><strong>低成本</strong></td>
+<td align="center"><code>开源</code>软件，项目成本大大降低</td>
+</tr>
+</tbody></table>
+<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><blockquote>
+<p>是Hadoop和HBase的重要组件；</p>
+<p><mark>基于Hadoop集群</mark></p>
+<p>目标：封装好那些复杂的、容易出错的关键服务，把<code>简单易用的接口</code>和<code>功能稳定、性能高效的系统</code>提供给用户</p>
+</blockquote>
+<h4 id="身份特性"><a href="#身份特性" class="headerlink" title="身份特性"></a>身份特性</h4><table>
+<thead>
+<tr>
+<th align="center">Leader</th>
+<th align="center">Follower</th>
+<th align="center">Observer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">负责客户端<code>写操作</code>的请求</td>
+<td align="center">负责客户端<code>读操作</code>的请求；并参与<code>leader</code>的选举</td>
+<td align="center">是特殊的<code>follower</code>，可以接收客户端<code>读操作</code>的请求，但不会参与选举</td>
+</tr>
+</tbody></table>
+<h3 id="HBase"><a href="#HBase" class="headerlink" title="HBase"></a>HBase</h3><ul>
+<li><p>使用此项技术，可以在廉价的<code>PC Server</code>上搭建起大规模数据存储的集群</p>
+</li>
+<li><p>位于<code>Hadoop</code>生态系统中<code>HDFS</code>的上层，依靠<code>MapReduce</code>进行资源管理；便于拓展集群</p>
+</li>
+<li><p><mark>需要在Hadoop和ZooKeeper的基础上工作，依赖ZooKeeper</mark></p>
+</li>
+</ul>
+<blockquote>
+<p>对于<code>HBase版本≥0.98.5</code>，需要在启动<code>HBase</code>之前，提前设置<code>JAVA_HOME</code>环境变量</p>
+<p>对于<code>HBase版本&lt;0.98.5</code>，<code>HBase</code>会检测<code>Java</code>的位置，若无<code>Java</code>有提示</p>
+<ul>
+<li><p>有严格JDK支持列表；需要根据HBase官网版本文档及JDK对应版本进行安装使用</p>
+</li>
+<li><p>如果基于<code>HDFS</code>平台的分布式模式安装，必须考虑<code>HBase</code>与<code>Hadoop</code>的兼容性</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><table>
+<thead>
+<tr>
+<th>Client</th>
+<th>包含<code>HBase</code>的接口，维护着一些高速缓存；用于加快对<code>HBase</code>的访问</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ZooKeeper</strong></td>
+<td>实时监控<code>Region</code>和<code>Server</code>的状态；存储<code>HBase</code>的模式</td>
+</tr>
+<tr>
+<td><strong>Master</strong></td>
+<td>为<code>Region Server</code>分配<code>Region</code>；负责<code>Region Server</code>的负载均衡</td>
+</tr>
+<tr>
+<td><strong>Region Server</strong></td>
+<td>维护<code>Master</code>分配给它的<code>Region</code>，并处理这些<code>Region</code>的I&#x2F;O请求；</td>
+</tr>
+</tbody></table>
+<h4 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h4><table>
+<thead>
+<tr>
+<th>独立模式（Standalone）<br>默认模式</th>
+<th>分布式模式（Distributed）</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td><strong>伪分布模式</strong></td>
+<td><strong>完全分布式模式</strong></td>
+</tr>
+<tr>
+<td>使用本地文件系统，运行，在同一个JVM中所有HBase守护进程和本地ZooKeeper</td>
+<td>守护进程运行在单个节点</td>
+<td>守护进程运行在集群中的所有节点上</td>
+</tr>
+<tr>
+<td></td>
+<td>既可以在本地文件系统运行，也可以在HDFS上运行</td>
+<td>只能在HDFS上运行</td>
+</tr>
+</tbody></table>
+<h4 id="HDFS与HBase对比"><a href="#HDFS与HBase对比" class="headerlink" title="HDFS与HBase对比"></a>HDFS与HBase对比</h4><table>
+<thead>
+<tr>
+<th align="center">HDFS</th>
+<th align="center">HBase</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">更适合批处理场景</td>
+<td align="center">更适合对数据进行随机读写、大量高并发应用、读写访问等非常简单的操作</td>
+</tr>
+<tr>
+<td align="center">不支持数据随机查找、</td>
+<td align="center">不适用于关系查询和计算</td>
+</tr>
+<tr>
+<td align="center">不适合增量数据处理，不支持数据更新</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h3 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h3><blockquote>
+<p>将<code>Stream</code>数据分成小的时间片段，以类似batch批量处理的方式来处理这小部分数据；</p>
+</blockquote>
+<ul>
+<li><p>类<code>Hadoop MapReduce</code>的通用并行框架</p>
+</li>
+<li><p>启用内存分布数据集；即在内存上运行</p>
+</li>
+</ul>
+<h4 id="性能优点"><a href="#性能优点" class="headerlink" title="性能优点"></a>性能优点</h4><table>
+<thead>
+<tr>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>有更快的运行速度</td>
+<td>因：启用内存分布数据集</td>
+</tr>
+<tr>
+<td><strong>易用性</strong></td>
+<td>提供多种高级运算符</td>
+</tr>
+<tr>
+<td><strong>通用性</strong></td>
+<td>提供大量的库</td>
+</tr>
+<tr>
+<td><strong>支持多种资源管理器</strong></td>
+<td>支持第三方以及自带的独立集群管理器</td>
+</tr>
+<tr>
+<td><strong>Shark</strong></td>
+<td>提供和<code>Hive</code>一样的<code>HiveQL</code>命令接口，最大程度保持和<code>Hive</code>的兼容</td>
+</tr>
+<tr>
+<td><strong>Spark R</strong></td>
+<td>为R语言提供轻量级的Spark前端的R包；提供一个分布式的<code>data frame</code>数据结构</td>
+</tr>
+</tbody></table>
+<h3 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h3><blockquote>
+<p>环境：Java、Hadoop、MySQL</p>
+</blockquote>
+<ul>
+<li><p>在<code>Hadoop</code>生态系统中<code>Hadoop</code>组件之上</p>
+</li>
+<li><p>基于<code>Hadoop</code>的数据仓库</p>
+</li>
+</ul>
+<h4 id="运行模式-1"><a href="#运行模式-1" class="headerlink" title="运行模式"></a>运行模式</h4><table>
+<thead>
+<tr>
+<th>嵌入模式</th>
+<th>本地模式</th>
+<th>远程模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>元数据信息被存储在<code>Hive</code>自带的<code>Derby</code>数据库中，而且只允许创建一个连接</td>
+<td>元数据信息被存储在<code>MySQL</code>中，<code>MySQL</code>与<code>Hive</code>运行在同一台物理计算机或服务器上</td>
+<td>元数据信息被存储在<code>MySQL</code>中，<code>MySQL</code>与<code>Hive</code>运行在不同物理计算机或服务器上</td>
+</tr>
+<tr>
+<td>用于测试</td>
+<td>用户开发与测试</td>
+<td>用于实际生产环境</td>
+</tr>
+</tbody></table>
+<h4 id="数据仓库的两个方面"><a href="#数据仓库的两个方面" class="headerlink" title="数据仓库的两个方面"></a>数据仓库的两个方面</h4><table>
+<thead>
+<tr>
+<th>面向主题的</th>
+<th>集成的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>这是一个面向主题的、集成的、不可更新的、随时间而变化的数据集合<br>用于支持企业或组织的决策分析处理</td>
+<td>仓库中的数据来自分散的操作型数据，包含规范化以及非规范化的数据；它将所需数据从原来的信息中抽取出来，进行加工与集成、统一与综合，保证仓库信息的一致性；</td>
+</tr>
+</tbody></table>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>学习成本低，开发灵活</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li><p>执行速度慢</p>
+</li>
+<li><p>不支持数据的更新、删除操作</p>
+</li>
+</ol>
+<h3 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h3><ul>
+<li><p>介于<code>关系数据库</code>与<code>非关系数据库</code>之间的产品</p>
+</li>
+<li><p><mark>首先要先配置好Hadoop集群服务，才配置MongoDB服务</mark></p>
+</li>
+<li><p>仅在<code>Hadoop</code>集群的主节点上配置<code>MongoDB</code></p>
+</li>
+</ul>
+<h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><h5 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h5><blockquote>
+<p>是<code>MongoDB</code>中数据的基本单位，类似关系型数据库中的<code>行</code>（但比<code>行</code>复杂）</p>
+<p>多个键及其关联的值有序的放在一起就构成了文档</p>
+</blockquote>
+<h5 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h5><blockquote>
+<p>就是一组文档，类似关系型数据库中的<code>表</code>；</p>
+</blockquote>
+<h5 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h5><blockquote>
+<p>由多个文档组成集合，多个集合组成数据库</p>
+</blockquote>
+<h6 id="系统数据库"><a href="#系统数据库" class="headerlink" title="系统数据库"></a>系统数据库</h6><table>
+<thead>
+<tr>
+<th align="center">Admin数据库</th>
+<th align="center">Local数据库</th>
+<th align="center">Config数据库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是一个权限数据库</td>
+<td align="center">用于存储本地单台服务器的任意集合；不会被复制</td>
+<td align="center">当使用分片模式时，用于保存分片的信息；仅在内部使用</td>
+</tr>
+</tbody></table>
+<h5 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h5><blockquote>
+<p>一个<code>MongoDB</code>实例可以包含一组数据库（Database）、一个数据库可以包含一组集合（Collection）、一个集合可以包含一组文档（Document）、一个文档可以包含一组字段（Field），每个字段都是一个键值对（Key&#x2F;Value pair）</p>
+</blockquote>
+<h4 id="功能特性"><a href="#功能特性" class="headerlink" title="功能特性"></a>功能特性</h4><table>
+<thead>
+<tr>
+<th>1. 面向集合存储，易存储对象类型的数据</th>
+<th>7. 使用高效的二进制数据存储，包括大型对象<br>(如视频等)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2. 模式自由</td>
+<td>8. 自动处理碎片，以支持云计算层次的扩展性</td>
+</tr>
+<tr>
+<td>3. 支持动态查询</td>
+<td>9. 支持<code>Ruby</code>、<code>Python</code>、<code>Java</code>、<code>C++</code>、<code>PHP</code>、<code>C#</code>等多种语言</td>
+</tr>
+<tr>
+<td>4. 支持完全索引</td>
+<td>10. 文件存储格式为BSON（JSON文件的一种扩展）</td>
+</tr>
+<tr>
+<td>5. 支持查询</td>
+<td>11. 可通过网络访问</td>
+</tr>
+<tr>
+<td>6. 支持复制和故障恢复</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><table>
+<thead>
+<tr>
+<th>适用场景</th>
+<th>不适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. 网站实时数据处理</td>
+<td>1. 要求高事务性的系统</td>
+</tr>
+<tr>
+<td>2. 缓存</td>
+<td>2. 传统的商业智能应用</td>
+</tr>
+<tr>
+<td>3. 高伸缩性的场景</td>
+<td>3. 复杂的跨文档（表）的级联查询</td>
+</tr>
+</tbody></table>
+<h3 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h3><blockquote>
+<p>是一个分布式消息队列</p>
+<ul>
+<li><p>必须首先配置<code>Hadoop</code>、<code>ZooKeeper</code>集群服务</p>
+</li>
+<li><p><mark>依赖ZooKeeper服务</mark></p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>具有高性能、持久化、多副本备份、横向扩展能力</li>
+</ul>
+<h4 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h4><h5 id="代理服务器"><a href="#代理服务器" class="headerlink" title="代理服务器"></a>代理服务器</h5><blockquote>
+<p><code>Kafka</code>集群中包含一个或多个服务器，这种服务器被称为<code>代理服务器</code>（Broker）或<code>Kafka</code>集群</p>
+<ul>
+<li>已发布的消息会保存在一组服务器中</li>
+</ul>
+</blockquote>
+<h5 id="话题（Topic）"><a href="#话题（Topic）" class="headerlink" title="话题（Topic）"></a>话题（Topic）</h5><blockquote>
+<p>是消息的<code>分类名</code></p>
+</blockquote>
+<h5 id="分区（Partition）"><a href="#分区（Partition）" class="headerlink" title="分区（Partition）"></a>分区（Partition）</h5><blockquote>
+<p>是物理上的概念；每个话题包含一个或多个分区</p>
+</blockquote>
+<h5 id="生产者（Producer）"><a href="#生产者（Producer）" class="headerlink" title="生产者（Producer）"></a>生产者（Producer）</h5><blockquote>
+<p>能够发布消息到<code>Kafka Broker</code>的任何对象</p>
+</blockquote>
+<h5 id="消费者（Consumer）"><a href="#消费者（Consumer）" class="headerlink" title="消费者（Consumer）"></a>消费者（Consumer）</h5><blockquote>
+<p>是从<code>Kafka Broker</code>读取消息的客户端；可以订阅一个或多个话题</p>
+</blockquote>
+<h5 id="消费者组群"><a href="#消费者组群" class="headerlink" title="消费者组群"></a>消费者组群</h5><blockquote>
+<p>为消费者进行分类；每个消费者属于一个特定的消费者组群；</p>
+</blockquote>
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><table>
+<thead>
+<tr>
+<th>通过O(1)的磁盘数据结构提供消息的持久化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高吞吐量</td>
+</tr>
+<tr>
+<td>支持通过Kafka服务器和消费机集群来进行消息分区</td>
+</tr>
+<tr>
+<td>支持Hadoop并行数据加载</td>
+</tr>
+</tbody></table>
+<h3 id="Flume"><a href="#Flume" class="headerlink" title="Flume"></a>Flume</h3><ul>
+<li>用于高效收集、聚合和移动大量且多数据源的日志数据</li>
+</ul>
+<h4 id="基本概念-2"><a href="#基本概念-2" class="headerlink" title="基本概念"></a>基本概念</h4><table>
+<thead>
+<tr>
+<th align="center">客户端（Client）</th>
+<th align="center">运行在一个独立的线程中，会产生数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">事件（Event）</td>
+<td align="center">对数据的一种封装，是一个数据单元；是<code>Flume</code>中传输数据最基本的单元</td>
+</tr>
+<tr>
+<td align="center">代理（Agent）</td>
+<td align="center">是<code>Flume</code>运行的核心；是<code>Flume</code>中最小的独立运行单位</td>
+</tr>
+<tr>
+<td align="center">数据源（Source）</td>
+<td align="center">是数据的收集端；负责从客户端手机捕获数据并进行格式化，随后将数据封装到<code>事件</code>里，最后将<code>事件</code>放到一个或多个通道中</td>
+</tr>
+<tr>
+<td align="center">通道（Channel）</td>
+<td align="center">是中转事件的一个临时存储，保存由<code>Source</code>组件传递过来的<code>事件</code></td>
+</tr>
+<tr>
+<td align="center">沉槽（Sink）</td>
+<td align="center">从<code>通道</code>中取出<code>事件</code>，负责将<code>事件</code>传输到下一跳或最终目的地</td>
+</tr>
+<tr>
+<td align="center">Flume数据流</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h4 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h4><blockquote>
+<p>使用事务的方式保证整个传输事件过程的可靠性</p>
+</blockquote>
+<ol>
+<li><p>当<code>事件</code>被存入<code>Channel</code>后、或者被传到下一个<code>代理</code>后、或者被存入外部目的地后、<code>Sink</code>才允许吧<code>事件</code>从<code>Channel</code>中删除掉</p>
+</li>
+<li><p>当节点出现故障时，日志能够被传输到其他节点上，不会丢失</p>
+</li>
+</ol>
+<p>由弱到强的可靠性保障：Besteffort<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="数据发送到接收方后，不进行确认">[1]</span></a></sup> ——&gt;  Store on Failure<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="当数据接收方崩溃时，将数据写到本地，等带接收方恢复后，再继续发送">[2]</span></a></sup> ——&gt; end-to-end<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="收到数据后，代理先将事件写到磁盘上，然后传送数据，传输成功后再删除数据；若失败，则重新发送">[3]</span></a></sup></p>
+<h4 id="场景-1"><a href="#场景-1" class="headerlink" title="场景"></a>场景</h4><table>
+<thead>
+<tr>
+<th>多个代理顺序连接</th>
+<th>多个代理的数据汇聚到同一个代理</th>
+<th>多级流</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可以将多个<code>Agent</code>顺序连接起来，将最初的数据源经过收集，存储到最终的存储系统中</td>
+<td>将多个代理的数据汇聚到一个用来存储数据的存储系统</td>
+<td>当多种日志流流入一个代理时，将混杂的日志流分开，为每种类型的日志建立一个自己的传输通道</td>
+</tr>
+</tbody></table>
+<h3 id="Storm"><a href="#Storm" class="headerlink" title="Storm"></a>Storm</h3><blockquote>
+<p>是一个分布式实时流式计算平台；</p>
+<ul>
+<li><p>必须首先配置<code>Hadoop</code>、<code>ZooKeeper</code>集群服务</p>
+</li>
+<li><p><mark>依赖ZooKeeper服务</mark></p>
+</li>
+<li><p>依靠<code>ZooKeeper</code>集群实现节点间的信息交换</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="基本概念-3"><a href="#基本概念-3" class="headerlink" title="基本概念"></a>基本概念</h4><table>
+<thead>
+<tr>
+<th>概念名</th>
+<th>描述</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tuple</td>
+<td>被处理的数据</td>
+<td></td>
+</tr>
+<tr>
+<td>Spout</td>
+<td>数据源</td>
+<td>一个<code>Topology</code>中的数据生产者</td>
+</tr>
+<tr>
+<td>Bolt</td>
+<td>数据操作</td>
+<td>所有的数据处理都由<code>Bolt</code>完成</td>
+</tr>
+<tr>
+<td>Task</td>
+<td>运行于<code>Spout</code>或<code>Bolt</code>中的线程</td>
+<td></td>
+</tr>
+<tr>
+<td>Worker</td>
+<td>运行<code>Task</code>线程的进程</td>
+<td>具体处理组件逻辑的进程<br>负责实际的计算和网络通信</td>
+</tr>
+</tbody></table>
+<h4 id="关键组件"><a href="#关键组件" class="headerlink" title="关键组件"></a>关键组件</h4><table>
+<thead>
+<tr>
+<th>Topology</th>
+<th>一个实时应用程序；<br>即各个组件间的消息流动形成逻辑上的一个拓扑结构</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Steam</td>
+<td>以<code>Tuple</code>为单位组成的一条有向无界的数据流</td>
+</tr>
+<tr>
+<td>Nimbus</td>
+<td>负责管理<code>Supervisor</code>、调度<code>Topology</code></td>
+</tr>
+<tr>
+<td>Supervisor</td>
+<td>接收<code>Nimbus</code>发来的工作指派并基于要求运行工作进程</td>
+</tr>
+</tbody></table>
+<h4 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h4><blockquote>
+<p>采用主从架构</p>
+<p>即，主节点<code>Nimbus</code>，从节点（工作节点）<code>Supervisor</code></p>
+<ul>
+<li>计算模型为<code>DAG</code>计算模型，<code>Spout</code>和<code>Bolt</code>节点在有向无环图李灵活组合构成<code>Stream</code>数据流，数据流以<code>Tuple</code>为基本的数据单元</li>
+</ul>
+</blockquote>
+<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><table>
+<thead>
+<tr>
+<th>流数据处理</th>
+<th>可以处理源源不断的消息</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>连续计算</td>
+<td>可以进行连续查询并把结果即时反馈给客户</td>
+</tr>
+<tr>
+<td>分布式</td>
+<td>处理延迟极低</td>
+</tr>
+<tr>
+<td>机器学习</td>
+<td></td>
+</tr>
+<tr>
+<td>实时分析</td>
+<td>数据在内存中处理</td>
+</tr>
+</tbody></table>
+<h4 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h4><ol>
+<li><p>常驻运行</p>
+</li>
+<li><p>流式处理（数据发一点处理一点）</p>
+</li>
+<li><p>实时处理（数据在内存中不写入磁盘）</p>
+</li>
+<li><p>DAG（Directed Acyclic Graph，有向无环图）模型</p>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《云计算与大数据技术(Linux网络平台+虚拟化技术+Hadoop数据运维)》·邢丽</p>
+<section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>数据发送到接收方后，不进行确认
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>当数据接收方崩溃时，将数据写到本地，等带接收方恢复后，再继续发送
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span>收到数据后，代理先将事件写到磁盘上，然后传送数据，传输成功后再删除数据；若失败，则重新发送
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
+      
+        <a href="/tags/Hadoop/" class="print-no-link">#Hadoop</a>
+      
+        <a href="/tags/ZooKeeper/" class="print-no-link">#ZooKeeper</a>
+      
+        <a href="/tags/Kafka/" class="print-no-link">#Kafka</a>
+      
+        <a href="/tags/Spark/" class="print-no-link">#Spark</a>
+      
+        <a href="/tags/Storm/" class="print-no-link">#Storm</a>
+      
+        <a href="/tags/HBase/" class="print-no-link">#HBase</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>大数据运维</div>
+      <div>https://smile-smith.github.io/2024/11/17/大数据运维/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>梦想的鱼</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              BY-NC-SA 4.0
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/22/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FHadoop%E9%9B%86%E7%BE%A4%EF%BC%88shell%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%EF%BC%89/" title="搭建分布式Hadoop集群（shell一键脚本）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">搭建分布式Hadoop集群（shell一键脚本）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/13/Word%E4%BD%BF%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7/" title="Word使用小技巧">
+                        <span class="hidden-mobile">Word使用小技巧</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+ var now = new Date();
+function createtime(){
+   var grt= new Date("11/20/2024 00:00:00");//此处修改你的建站时间或者网站上线时间
+   now.setTime(now.getTime()+250);
+   days = (now - grt ) / 1000 / 60 / 60 / 24;
+   dnum = Math.floor(days);
+   hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+   hnum = Math.floor(hours);
+   if(String(hnum).length ==1 ){
+        hnum = "0" + hnum;
+   }
+   minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+   mnum = Math.floor(minutes);
+   if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+   }
+   seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+   snum = Math.round(seconds);
+   if(String(snum).length ==1 ){
+                snum = "0" + snum;
+   }
+   document.getElementById("timeDate").innerHTML = "本站已安全运行"+dnum+" 天 "; 
+   document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+} //此处自定义显示内容 
+setInterval("createtime()",250);
+</script>
+</div>
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
