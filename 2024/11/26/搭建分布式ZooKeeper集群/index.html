@@ -21,26 +21,26 @@
   <meta name="author" content="梦想的鱼">
   <meta name="keywords" content="">
   
-    <meta name="description" content="搭建ZeroTier的Moon节点ZeroTier流量分析  公网IP：同时拥有IPV4和IPV6的公网IP，或者仅拥有一方，都可以认为有公网IP；  Moons：由于国内的网络安全策略，导致国内可能没有相应的服务器，这时候就需要自己搭建，以便加快相互通信  动作1：出口网关路由器向中心服务器通告自己的IP地址以及端口信息；为了便于后面两个局域网互相通信；即“判断两端局域网是否存在公网IP”  动">
+    <meta name="description" content="搭建分布式ZooKeeper集群前提 首先配置好Hadoop集群  为了配置方便，Hadoop集群的所有软件及文件位于&#x2F;opt&#x2F;module目录下   1. 修改主机名(域名)与IP地址的对应关系 规划功能     Master Slave1 Slave2    主节点 从节点 从节点   192.168.66.6 192.168.66.7 192.168.66.21    如若在这之前，Hado">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建ZeroTier的Moon节点">
-<meta property="og:url" content="https://smile-smith.github.io/2024/10/20/%E6%90%AD%E5%BB%BAZeroTier%E7%9A%84Moon%E8%8A%82%E7%82%B9/index.html">
+<meta property="og:title" content="搭建分布式ZooKeeper集群">
+<meta property="og:url" content="https://smile-smith.github.io/2024/11/26/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FZooKeeper%E9%9B%86%E7%BE%A4/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="搭建ZeroTier的Moon节点ZeroTier流量分析  公网IP：同时拥有IPV4和IPV6的公网IP，或者仅拥有一方，都可以认为有公网IP；  Moons：由于国内的网络安全策略，导致国内可能没有相应的服务器，这时候就需要自己搭建，以便加快相互通信  动作1：出口网关路由器向中心服务器通告自己的IP地址以及端口信息；为了便于后面两个局域网互相通信；即“判断两端局域网是否存在公网IP”  动">
+<meta property="og:description" content="搭建分布式ZooKeeper集群前提 首先配置好Hadoop集群  为了配置方便，Hadoop集群的所有软件及文件位于&#x2F;opt&#x2F;module目录下   1. 修改主机名(域名)与IP地址的对应关系 规划功能     Master Slave1 Slave2    主节点 从节点 从节点   192.168.66.6 192.168.66.7 192.168.66.21    如若在这之前，Hado">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-10-15-15-58-33-image.png">
-<meta property="article:published_time" content="2024-10-20T14:26:20.000Z">
-<meta property="article:modified_time" content="2024-11-24T14:31:03.186Z">
+<meta property="article:published_time" content="2024-11-26T15:39:00.000Z">
+<meta property="article:modified_time" content="2024-11-27T02:34:34.350Z">
 <meta property="article:author" content="梦想的鱼">
-<meta property="article:tag" content="ZeroTier One">
+<meta property="article:tag" content="云计算">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="ZooKeeper">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://smile-smith.github.io/img/assets/2024-10-15-15-58-33-image.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>搭建ZeroTier的Moon节点 - </title>
+  <title>搭建分布式ZooKeeper集群 - </title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="搭建ZeroTier的Moon节点"></span>
+            <span id="subtitle" data-typed-text="搭建分布式ZooKeeper集群"></span>
           
         </div>
 
@@ -217,8 +217,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-10-20 22:26" pubdate>
-          2024年10月20日 晚上
+        <time datetime="2024-11-26 23:39" pubdate>
+          2024年11月26日 晚上
         </time>
       </span>
     
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          772 字
         
       </span>
     
@@ -240,7 +240,7 @@
         
         
         
-          11 分钟
+          7 分钟
         
       </span>
     
@@ -286,202 +286,75 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">搭建ZeroTier的Moon节点</h1>
+            <h1 id="seo-header">搭建分布式ZooKeeper集群</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="搭建ZeroTier的Moon节点"><a href="#搭建ZeroTier的Moon节点" class="headerlink" title="搭建ZeroTier的Moon节点"></a>搭建ZeroTier的Moon节点</h1><h2 id="ZeroTier流量分析"><a href="#ZeroTier流量分析" class="headerlink" title="ZeroTier流量分析"></a>ZeroTier流量分析</h2><hr>
+                <h1 id="搭建分布式ZooKeeper集群"><a href="#搭建分布式ZooKeeper集群" class="headerlink" title="搭建分布式ZooKeeper集群"></a>搭建分布式ZooKeeper集群</h1><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><blockquote>
+<p>首先配置好<code>Hadoop</code>集群</p>
 <ul>
-<li><p>公网IP：同时拥有IPV4和IPV6的公网IP，或者仅拥有一方，都可以认为有公网IP；</p>
-</li>
-<li><p><u><em>Moons：由于国内的网络安全策略，导致国内可能没有相应的服务器，这时候就需要自己搭建，以便加快相互通信</em></u></p>
-</li>
-<li><p>动作1：出口网关路由器向中心服务器通告自己的IP地址以及端口信息；为了便于后面两个局域网互相通信；即<u><em>“判断两端局域网是否存在<strong>公网IP</strong>”</em></u></p>
-</li>
-<li><p>动作2：若一方存在<u><em>“公网IP”</em></u>，则ZeroTier帮助两个局域网的设备通过zerotier私有协议，直接建立连接，从而达到P2P直连（就像在同一个内网互相连接一样）；</p>
-</li>
-<li><p>动作3：若两方都不存在<u><em>”公网IP“</em></u>，或一方有<u><em>“公网IPV6”</em></u>一方没有，那么也是认为不存在<u><em>“公网IP”</em></u>的情况；这时候，国外中心服务器（Planet）会通告目前可用的国外&#x2F;国内转发服务器（Moons）【或者理解为备份中心服务器】，两端局域网通过这些（Moons）进行数据通信</p>
-</li>
+<li>为了配置方便，<code>Hadoop</code>集群的所有软件及文件位于<code>/opt/module</code>目录下</li>
 </ul>
-<hr>
-<p><img src="/img/assets/2024-10-15-15-58-33-image.png" srcset="/img/loading.gif" lazyload></p>
-<hr>
-<h2 id="搭建Moon节点准备工作"><a href="#搭建Moon节点准备工作" class="headerlink" title="搭建Moon节点准备工作"></a>搭建Moon节点准备工作</h2><h3 id="1-根据自己的服务器的类型安装对应的ZeroTier"><a href="#1-根据自己的服务器的类型安装对应的ZeroTier" class="headerlink" title="1. 根据自己的服务器的类型安装对应的ZeroTier"></a>1. 根据自己的服务器的类型安装对应的ZeroTier</h3><hr>
-<h3 id="2-正式开始搭建"><a href="#2-正式开始搭建" class="headerlink" title="2. 正式开始搭建"></a>2. 正式开始搭建</h3><h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><p>1. </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo zerotier-cli initmoon identity.public &gt;&gt; moon.json<br></code></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>修改模板（moon.json）</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">找到以下这行，然后根据自己的IP地址修改</span><br>“stableEndpoints”: [ “8.8.8.8/9993” ] #8.8.8.8 改为你的公网IP<br><span class="hljs-meta prompt_"># </span><span class="language-bash">如果有多个IP则加“,”号区分</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">例 “stableEndpoints”: [ “8.8.8.8/9993”,<span class="hljs-string">&quot;IPV6地址/9993&quot;</span> ]</span><br></code></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>生成MOON签名</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs batch">sudo zerotier-cli genmoon moon.json<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><p>运行后在当前目录下会生成类似0000xxx.moon的文件</p>
-</li>
-<li><p>“0000xxx”这一串字符就是这台Moon的ID，在后续使用中会用到，需要记住</p>
-</li>
-</ul>
-<ol start="4">
-<li><strong>把Moon加入到网络中</strong></li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs batch"># 在当前目录下建立文件夹 moons.d<br># 然后将刚刚生成的 “0000xxx.moon” 文件拷贝进去<br></code></pre></td></tr></table></figure>
-
-<ol start="5">
-<li><p>将ZeroTier程序重新启动</p>
-</li>
-<li><p><strong>最后在防火墙上放行udp的9993端口！！！！！</strong></p>
-</li>
-<li><p>搭建完成</p>
-</li>
-</ol>
-<hr>
-<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><ol>
-<li><p>找到安装ZeroTier的系统目录；<u><em>一般在C:\ProgramData\这个目录下，这个目录有可能被隐藏，需要打开隐藏目录</em></u></p>
-</li>
-<li><p>用管理员打开CMD命令行</p>
-</li>
-<li><p>在里面写入以下命令</p>
-</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs batch">cd &quot;你刚刚找到的ZeroTier的系统目录&quot;<br>(例：cd C:\ProgramData\ZeroTier\One&quot;)<br></code></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><p>接下来和在Linux中搭建Moon的内容一致</p>
-</li>
-<li><p>生成Moon模板（在当前目录下）</p>
-</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs batch">zerotier-one_x64.exe -i initmoon identity.public &gt;&gt; moon.json<br></code></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>修改模板（moon.json）</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs batch"># 找到以下这行，然后根据自己的IP地址修改<br>“stableEndpoints”: [ “8.8.8.8/9993” ] #8.8.8.8 改为你的公网IP<br># 如果有多个IP则加“,”号区分<br># 例 “stableEndpoints”: [ “8.8.8.8/9993”,&quot;IPV6地址/9993&quot; ]<br></code></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>生成MOON签名</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs batch">zerotier-one_x64.exe -i genmoon moon.json<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><p>运行后在C:\ProgramData\ZeroTier\One\目录下会生成类似000xx.moon的文件</p>
-</li>
-<li><p>“000xx”这一串字符就是这台Moon的ID，在后续使用中会用到，需要记住</p>
-</li>
-</ul>
-<ol start="8">
-<li>把Moon加入到网络中</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs batch"># 在C:\ProgramData\ZeroTier\One\目录下建立文件夹 moons.d<br># 然后将刚刚生成的 “000xx.moon” 文件拷贝进去<br></code></pre></td></tr></table></figure>
-
-<ol start="9">
-<li><p>将ZeroTier程序重新启动</p>
-</li>
-<li><p><strong>最后在防火墙上放行udp和tcp的9993端口！！！！！</strong></p>
-</li>
-<li><p>搭建完成</p>
-</li>
-</ol>
-<h3 id="3-使用Moon服务器"><a href="#3-使用Moon服务器" class="headerlink" title="3. 使用Moon服务器"></a>3. 使用Moon服务器</h3><h4 id="在需要使用Moon服务器连接的设备上执行以下命令"><a href="#在需要使用Moon服务器连接的设备上执行以下命令" class="headerlink" title="在需要使用Moon服务器连接的设备上执行以下命令"></a>在需要使用Moon服务器连接的设备上执行以下命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Windows</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">需要使用cmd的管理员模式</span><br>cd C:\ProgramData\ZeroTier\One\<br>zerotier-one_x64.exe -q orbit 0000xxx 00000xxx #moon服务器的ID值，输入2遍<br><span class="hljs-meta prompt_"># </span><span class="language-bash">Linux</span><br>sudo zerotier-cli orbit 000000xxxxx 000000xxxxx  #moon服务器的ID值，输入2遍<br></code></pre></td></tr></table></figure>
-
-<h3 id="4-验证客户端是否成功使用Moon服务器"><a href="#4-验证客户端是否成功使用Moon服务器" class="headerlink" title="4. 验证客户端是否成功使用Moon服务器"></a>4. 验证客户端是否成功使用Moon服务器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Windows</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">同样使用cmd的管理员模式</span><br>cd C:\ProgramData\ZeroTier\One\<br>zerotier-one_x64.exe -q listpeers<br><span class="hljs-meta prompt_"># </span><span class="language-bash">Linux</span><br>sudo zerotier-cli listpeers<br></code></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><ul>
-<li>如果在一开始的时候ZeroTier的网络加错了，没关系，退出重新加入正确的就好</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Windows</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">右键屏幕右下方的小图标栏中的zerotier图标，加入正确的网络就行</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Linux</span><br>zerotier-cli leave &quot;刚刚错误的网络ID&quot;<br>zerotier-cli join &quot;正确的网络ID&quot; <br></code></pre></td></tr></table></figure>
-
-<ul>
-<li>关于三条命令的解释</li>
-</ul>
+</blockquote>
+<h2 id="1-修改主机名-域名-与IP地址的对应关系"><a href="#1-修改主机名-域名-与IP地址的对应关系" class="headerlink" title="1. 修改主机名(域名)与IP地址的对应关系"></a>1. 修改主机名(域名)与IP地址的对应关系</h2><blockquote>
+<p>规划功能</p>
+</blockquote>
 <table>
 <thead>
 <tr>
-<th align="center">zerotier-cli listpeers</th>
-<th align="center">zerotier-cli peers</th>
-<th align="center">zerotier-cli listnetworks</th>
+<th>Master</th>
+<th>Slave1</th>
+<th>Slave2</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">列出所有对等点的信息；</td>
-<td align="center">列出所有对等点的信息，<u><em>但是更加漂亮</em></u></td>
-<td align="center">列出当前设备加入的所有zerotier网络信息</td>
+<td>主节点</td>
+<td>从节点</td>
+<td>从节点</td>
 </tr>
-</tbody></table>
-<p><strong>Listpeers的输出信息</strong></p>
-<table>
-<thead>
 <tr>
-<th><ztaddr></th>
-<th><ver></th>
-<th><role></th>
-<th><lat></th>
-<th><link></th>
-<th><lastTX></th>
-<th><lastRX></th>
-<th><path></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>zerotier私有地址</td>
-<td>版本号</td>
-<td>对等点身份（行星节点、还是叶子结点、还是中转服务器节点）</td>
-<td>服务器的延迟</td>
-<td>连接类型</td>
-<td>最后一次数据发送的时间戳</td>
-<td>最后一次数据接收的时间戳</td>
-<td>实际的IP地址以及端口</td>
+<td>192.168.66.6</td>
+<td>192.168.66.7</td>
+<td>192.168.66.21</td>
 </tr>
 </tbody></table>
-<p><strong>Peers的输出信息</strong></p>
-<table>
-<thead>
-<tr>
-<th><ztaddr></th>
-<th><path></th>
-<th><latency></th>
-<th><version></th>
-<th><role></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>zerotier私有地址</td>
-<td>实际的IP地址以及端口</td>
-<td>服务器的延迟</td>
-<td>zerotier的版本号</td>
-<td>对等点身份（行星节点、还是叶子结点、还是中转服务器节点）</td>
-</tr>
-</tbody></table>
-<p><strong>Listnetworks的输出信息</strong></p>
-<table>
-<thead>
-<tr>
-<th><nwid></th>
-<th><name></th>
-<th><mac></th>
-<th><status></th>
-<th><type></th>
-<th><dev></th>
-<th><ZT assigned ips></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>zerotier网络的唯一标识符</td>
-<td>网络名称（可以在zerotier官网自己定义）</td>
-<td>当前设备的物理地址</td>
-<td>当前设备在zerotier网络中的状态</td>
-<td>网络类型（私有&#x2F;公共）</td>
-<td>网络接口的设备名称</td>
-<td>当前设备在zerotier中被分配的IP地址</td>
-</tr>
-</tbody></table>
+<ul>
+<li>如若在这之前，<code>Hadoop</code>已配置过此项，则只需记住已配置的数据，无须更改</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt; /etc/hosts &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"># ------ZooKeeper 配置--------</span><br><span class="hljs-string">192.168.66.6 master </span><br><span class="hljs-string">192.168.66.7 slave1 </span><br><span class="hljs-string">192.168.66.21 slave2  </span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-安装程序文件"><a href="#2-安装程序文件" class="headerlink" title="2. 安装程序文件"></a>2. 安装程序文件</h2><ul>
+<li>首先上传zookeeper的文件到服务器上</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">tar -zxvf apache-zookeeper-3.6.3-bin.tar.gz  -C /opt/module/<br><span class="hljs-built_in">mv</span> /opt/module/apache-zookeeper-3.6.3-bin/ /opt/module/ZK-3.6.3/<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-配置用户环境变量"><a href="#3-配置用户环境变量" class="headerlink" title="3. 配置用户环境变量"></a>3. 配置用户环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt; /etc/profile &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"># ------- ZooKeeper 配置-----------</span><br><span class="hljs-string">export ZK_HOME=/opt/module/ZK-3.6.3/</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 编辑 /etc/profile</span><br>vi /etc/profile<br><br><span class="hljs-comment"># 在PATH中添加 ”$ZK_HOME/bin:$ZK_HOME/conf“</span><br><br><span class="hljs-comment"># 在CLASSPATH中添加 ”$ZK_HOME/lib“</span><br><br><br>----------------------------<br>           说明<br><br>举例   <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$JAVA_HOME</span>/bin:<span class="hljs-variable">$ZK_HOME</span>/bin:<span class="hljs-variable">$ZK_HOME</span>/conf:<span class="hljs-variable">$PATH</span><br><br>英文冒号代表分隔<br><br>这段代码表示<br>1. 当你输入一个命令时，shell会首先在<span class="hljs-string">&quot;JAVA_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>2. 其次，若找不到，则在<span class="hljs-string">&quot;ZK_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>3. 再者，若找不到，则在<span class="hljs-string">&quot;ZK_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;conf&quot;</span>子目录中查找，<br>4. 最后，若找不到，则在<span class="hljs-string">&quot;PATH&quot;</span>的指定目录中查找<br><br>-----------------------------<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-编写Zookeeper配置文件"><a href="#4-编写Zookeeper配置文件" class="headerlink" title="4. 编写Zookeeper配置文件"></a>4. 编写Zookeeper配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 文件重命名</span><br><span class="hljs-built_in">mv</span> /opt/module/ZK-3.6.3/conf/zoo_sample.cfg /opt/module/ZK-3.6.3/conf/zoo.cfg<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建zookeeper的数据目录</span><br><span class="hljs-built_in">mkdir</span> /opt/module/ZK-3.6.3/data<br><br><span class="hljs-comment"># 创建zookeeper的节点信息</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;1&quot;</span> &gt; /opt/module/ZK-3.6.3/data/myid<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 更改Zookeeper的数据位置，并添加zookeeper的节点信息</span><br><br><span class="hljs-comment"># 这里的节点信息，根据一开始你自己的规划填写，也可以填写主机名</span><br><br>sed -i -e <span class="hljs-string">&#x27;s|dataDir=/tmp/zookeeper|dataDir=/opt/module/ZK-3.6.3/data|&#x27;</span> \<br>-e <span class="hljs-string">&#x27;/dataDir=/a \</span><br><span class="hljs-string">server.1=192.168.66.6:2888:3888 \</span><br><span class="hljs-string">server.2=192.168.66.7:2888:3888 \</span><br><span class="hljs-string">server.3=192.168.66.21:2888:3888&#x27;</span> /opt/module/ZK-3.6.3/conf/zoo.cfg<br></code></pre></td></tr></table></figure>
+
+<h2 id="5-同步所需文件"><a href="#5-同步所需文件" class="headerlink" title="5. 同步所需文件"></a>5. 同步所需文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 同步到salve1机器</span><br>scp -r /opt/module/ZK-3.6.3/ root@salve1:/opt/module/<br>scp /etc/profile root@salve1:/etc/<br><br><span class="hljs-comment"># 同步到salve2机器</span><br>scp -r /opt/module/ZK-3.6.3/ root@salve2:/opt/module/<br>scp /etc/profile root@salve2:/etc/<br></code></pre></td></tr></table></figure>
+
+<h2 id="6-修改从节点Zookeeper配置文件"><a href="#6-修改从节点Zookeeper配置文件" class="headerlink" title="6. 修改从节点Zookeeper配置文件"></a>6. 修改从节点Zookeeper配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 修改salve1的配置文件</span><br>ssh salve1 <span class="hljs-string">&#x27;echo &quot;2&quot; &gt; /opt/module/ZK-3.6.3/data/myid&#x27;</span><br><br><span class="hljs-comment"># 修改salve2的配置文件</span><br>ssh salve2 <span class="hljs-string">&#x27;echo &quot;3&quot; &gt; /opt/module/ZK-3.6.3/data/myid&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="7-启动Zookeeper"><a href="#7-启动Zookeeper" class="headerlink" title="7.启动Zookeeper"></a>7.启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在master上执行</span><br>/opt/module/ZK-3.6.3/bin/zkServer.sh start<br><span class="hljs-comment"># 在salve1上执行</span><br>ssh salve1 <span class="hljs-string">&#x27; /opt/module/ZK-3.6.3/bin/zkServer.sh start &#x27;</span><br><span class="hljs-comment"># 在salve2上执行</span><br>ssh salve2 <span class="hljs-string">&#x27; /opt/module/ZK-3.6.3/bin/zkServer.sh start &#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="8-查看Zookeeper状态"><a href="#8-查看Zookeeper状态" class="headerlink" title="8. 查看Zookeeper状态"></a>8. 查看Zookeeper状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在master上执行</span><br>opt/module/ZK-3.6.3/bin/zkServer.sh status<br><span class="hljs-comment"># 在salve1上执行</span><br>ssh salve1 <span class="hljs-string">&#x27; /opt/module/ZK-3.6.3/bin/zkServer.sh status &#x27;</span><br><span class="hljs-comment"># 在salve2上执行</span><br>ssh salve2 <span class="hljs-string">&#x27; /opt/module/ZK-3.6.3/bin/zkServer.sh status &#x27;</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_46580173/article/details/121110866">解决问题Client port found: 2181. Client address: localhost. Client SSL: false.-CSDN博客</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_47025166/article/details/125405156?spm=1001.2014.3001.5502">Linux环境下zookeeper的安装教程（超详细！！）_linux zk安装-CSDN博客</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_47025166/article/details/125415538">zookeeper集群搭建步骤（超详细）-CSDN博客</a></p>
+</li>
+</ol>
 
                 
               </div>
@@ -503,13 +376,6 @@
   <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
   
   
-    <span>></span>
-    
-  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" class="category-chain-item">内网穿透</a>
-  
-  
-
-  
 
       </span>
     
@@ -522,7 +388,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/ZeroTier-One/" class="print-no-link">#ZeroTier One</a>
+        <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" class="print-no-link">#云计算</a>
+      
+        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
+      
+        <a href="/tags/ZooKeeper/" class="print-no-link">#ZooKeeper</a>
       
     </div>
   
@@ -534,8 +404,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>搭建ZeroTier的Moon节点</div>
-      <div>https://smile-smith.github.io/2024/10/20/搭建ZeroTier的Moon节点/</div>
+      <div>搭建分布式ZooKeeper集群</div>
+      <div>https://smile-smith.github.io/2024/11/26/搭建分布式ZooKeeper集群/</div>
     </div>
     <div class="license-meta">
       
@@ -547,7 +417,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年10月20日</div>
+          <div>2024年11月26日</div>
         </div>
       
       
@@ -572,18 +442,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/10/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E9%80%9F%E6%88%90%E8%AF%BE(%E5%B7%B2%E5%AE%8C%E6%88%90)/" title="计算机速成课笔记">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">计算机速成课笔记</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/10/18/Proxmox%20VE%E7%BD%91%E7%BB%9C/" title="Proxmox VE网络">
-                        <span class="hidden-mobile">Proxmox VE网络</span>
+                      <a href="/2024/11/17/%E5%A4%A7%E6%95%B0%E6%8D%AE%E8%BF%90%E7%BB%B4/" title="大数据运维">
+                        <span class="hidden-mobile">大数据运维</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
