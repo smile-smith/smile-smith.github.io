@@ -21,15 +21,15 @@
   <meta name="author" content="梦想的鱼">
   <meta name="keywords" content="">
   
-    <meta name="description" content="搭建分布式HBase集群功能规划   Master Slave1 Slave2    主节点 从节点 从节点   HRegionServer HRegionServer HRegionServer   192.168.66.6 192.168.66.7 192.168.66.21   前提 搭建好Hadoop集群以及ZooKeeper集群，并启动  开始安装1. 安装程序文件 首先上传HBase的">
+    <meta name="description" content="搭建分布式HBase集群 本次实验环境：Centos 7-2009、Hadoop-3.1.3、OpenJDK 8、Zookeeper-3.6.3、Hbase-2.4.11  功能规划   Master Slave1 Slave2    主节点 从节点 从节点   HRegionServer HRegionServer HRegionServer   192.168.66.6 192.168.66.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建分布式HBase集群">
 <meta property="og:url" content="https://smile-smith.github.io/2024/11/28/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FHBase%E9%9B%86%E7%BE%A4/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="搭建分布式HBase集群功能规划   Master Slave1 Slave2    主节点 从节点 从节点   HRegionServer HRegionServer HRegionServer   192.168.66.6 192.168.66.7 192.168.66.21   前提 搭建好Hadoop集群以及ZooKeeper集群，并启动  开始安装1. 安装程序文件 首先上传HBase的">
+<meta property="og:description" content="搭建分布式HBase集群 本次实验环境：Centos 7-2009、Hadoop-3.1.3、OpenJDK 8、Zookeeper-3.6.3、Hbase-2.4.11  功能规划   Master Slave1 Slave2    主节点 从节点 从节点   HRegionServer HRegionServer HRegionServer   192.168.66.6 192.168.66.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-28T15:27:00.000Z">
-<meta property="article:modified_time" content="2024-11-28T15:31:38.333Z">
+<meta property="article:modified_time" content="2024-11-30T16:33:53.359Z">
 <meta property="article:author" content="梦想的鱼">
 <meta property="article:tag" content="大数据">
 <meta property="article:tag" content="HBase">
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          760 字
+          778 字
         
       </span>
     
@@ -290,7 +290,10 @@
             
               <div class="markdown-body">
                 
-                <h1 id="搭建分布式HBase集群"><a href="#搭建分布式HBase集群" class="headerlink" title="搭建分布式HBase集群"></a>搭建分布式HBase集群</h1><h2 id="功能规划"><a href="#功能规划" class="headerlink" title="功能规划"></a>功能规划</h2><table>
+                <h1 id="搭建分布式HBase集群"><a href="#搭建分布式HBase集群" class="headerlink" title="搭建分布式HBase集群"></a>搭建分布式HBase集群</h1><ul>
+<li>本次实验环境：Centos 7-2009、Hadoop-3.1.3、OpenJDK 8、Zookeeper-3.6.3、Hbase-2.4.11</li>
+</ul>
+<h2 id="功能规划"><a href="#功能规划" class="headerlink" title="功能规划"></a>功能规划</h2><table>
 <thead>
 <tr>
 <th align="center">Master</th>
@@ -320,13 +323,13 @@
 <h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="1-安装程序文件"><a href="#1-安装程序文件" class="headerlink" title="1. 安装程序文件"></a>1. 安装程序文件</h3><ul>
 <li>首先上传HBase的文件到服务器上</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 解压文件到指定目录</span><br>tar -zxvf hbase-2.4.11-bin.tar.gz -C /opt/module/<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 解压文件到指定目录</span><br>tar -zxvf hbase-bin.tar.gz -C /opt/module/<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-配置用户环境变量"><a href="#2-配置用户环境变量" class="headerlink" title="2. 配置用户环境变量"></a>2. 配置用户环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt;  ~/.bashrc &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"># ------- HBase 配置-----------</span><br><span class="hljs-string">export HBASE=/opt/module/hbase-2.4.11</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-配置用户环境变量"><a href="#2-配置用户环境变量" class="headerlink" title="2. 配置用户环境变量"></a>2. 配置用户环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt;  ~/.bashrc &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"># ------- HBase 配置-----------</span><br><span class="hljs-string">export HBASE=/opt/module/hbase</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 编辑 ~/.bashrc</span><br>vi  ~/.bashrc<br><br><span class="hljs-comment"># 在PATH中添加 $HBASE/bin</span><br><br>----------------------------<br>           说明<br><br>举例   <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$JAVA_HOME</span>/bin:<span class="hljs-variable">$HBASE</span>/bin:<span class="hljs-variable">$PATH</span><br><br>英文冒号代表分隔<br><br>这段代码表示<br>1. 当你输入一个命令时，shell会首先在<span class="hljs-string">&quot;JAVA_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>2. 其次，若找不到，则在<span class="hljs-string">&quot;HBASE&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>3. 最后，若找不到，则在<span class="hljs-string">&quot;PATH&quot;</span>的指定目录中查找<br><br>-----------------------------<br></code></pre></td></tr></table></figure>
 
-<h3 id="3-修改hbase配置文件"><a href="#3-修改hbase配置文件" class="headerlink" title="3. 修改hbase配置文件"></a>3. 修改hbase配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入Hbase的配置文件目录</span><br><span class="hljs-built_in">cd</span> /opt/module/hbase-2.4.11/conf<br></code></pre></td></tr></table></figure>
+<h3 id="3-修改hbase配置文件"><a href="#3-修改hbase配置文件" class="headerlink" title="3. 修改hbase配置文件"></a>3. 修改hbase配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入Hbase的配置文件目录</span><br><span class="hljs-built_in">cd</span> /opt/module/hbase/conf<br></code></pre></td></tr></table></figure>
 
 <h4 id="3-1-配置hbase使用外部Zookeeper（二选一）"><a href="#3-1-配置hbase使用外部Zookeeper（二选一）" class="headerlink" title="3.1 配置hbase使用外部Zookeeper（二选一）"></a>3.1 配置hbase使用外部Zookeeper（二选一）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 将hase-env.sh文件中HBASE_MANAGES_ZK=true修改为HBASE_MANAGES_ZK=false</span><br>sed -i <span class="hljs-string">&#x27;s|# export HBASE_MANAGES_ZK=true|export HBASE_MANAGES_ZK=false|&#x27;</span> hbase-env.sh<br></code></pre></td></tr></table></figure>
 
@@ -334,7 +337,7 @@
 
 <h4 id="3-3-修改hbase-site-xml文件"><a href="#3-3-修改hbase-site-xml文件" class="headerlink" title="3.3 修改hbase-site.xml文件"></a>3.3 修改hbase-site.xml文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 注释原本的标签内容</span><br>sed -i <span class="hljs-string">&#x27;41a &lt;!--&#x27;</span> hbase-site.xml<br>sed -i <span class="hljs-string">&#x27;54a --&gt;&#x27;</span> hbase-site.xml<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">根据自己节点的信息，修改下面内容的主机名，随后复制粘贴<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">根据自己节点的信息，修改下面内容的主机名，随后复制粘贴即可<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 一键新增hbase配置</span><br>sed -i <span class="hljs-string">&#x27;55a \</span><br><span class="hljs-string">&lt;!-- 指定hbase在hdfs上数据位置 --&gt; \</span><br><span class="hljs-string">  &lt;property&gt; \</span><br><span class="hljs-string">    &lt;name&gt;hbase.rootdir&lt;/name&gt; \</span><br><span class="hljs-string">    &lt;value&gt;hdfs://master:8020/hbase&lt;/value&gt; \</span><br><span class="hljs-string">  &lt;/property&gt; \</span><br><span class="hljs-string">&lt;!-- 指定集群的运行模式，ture代表分布式，flase代表单机模式 --&gt; \</span><br><span class="hljs-string">  &lt;property&gt; \</span><br><span class="hljs-string">    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt; \</span><br><span class="hljs-string">    &lt;value&gt;true&lt;/value&gt; \</span><br><span class="hljs-string">  &lt;/property&gt; \</span><br><span class="hljs-string">&lt;!-- 指定zookeeper的主机 --&gt; \</span><br><span class="hljs-string">  &lt;property&gt; \</span><br><span class="hljs-string">    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt; \</span><br><span class="hljs-string">    &lt;value&gt;master,slave1,slave2&lt;/value&gt; \</span><br><span class="hljs-string">  &lt;/property&gt; \</span><br><span class="hljs-string">&lt;!-- 指定Hbase是否检查流功能 --&gt; \</span><br><span class="hljs-string">  &lt;property&gt; \</span><br><span class="hljs-string">    &lt;name&gt;hbase.unsafe.stream.capability.enforce&lt;/name&gt; \</span><br><span class="hljs-string">    &lt;value&gt;true&lt;/value&gt; \</span><br><span class="hljs-string">  &lt;/property&gt;&#x27;</span> hbase-site.xml<br></code></pre></td></tr></table></figure>
 
@@ -343,21 +346,23 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 清空原本配置</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&quot;</span> &gt; regionservers<br><br><span class="hljs-comment"># 根据自己的节点信息修改主机名，随后复制粘贴</span><br><span class="hljs-built_in">cat</span> &gt; regionservers &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">master</span><br><span class="hljs-string">slave1</span><br><span class="hljs-string">slave2</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="4-分发文件"><a href="#4-分发文件" class="headerlink" title="4. 分发文件"></a>4. 分发文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 同步到slave1机器</span><br>scp -r /opt/module/hbase-2.4.11 slave1:/opt/module/<br>scp  ~/.bashrc root@slave1:/root<br><br><span class="hljs-comment"># 同步到slave2机器</span><br>scp -r /opt/module/hbase-2.4.11 slave2:/opt/module/<br>scp  ~/.bashrc root@slave1:/root<br></code></pre></td></tr></table></figure>
+<h3 id="4-分发文件"><a href="#4-分发文件" class="headerlink" title="4. 分发文件"></a>4. 分发文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 同步到slave1机器</span><br>scp -r /opt/module/hbase/ slave1:/opt/module/<br>scp  ~/.bashrc root@slave1:/root<br><br><span class="hljs-comment"># 同步到slave2机器</span><br>scp -r /opt/module/hbase/ slave2:/opt/module/<br>scp  ~/.bashrc root@slave1:/root<br></code></pre></td></tr></table></figure>
 
-<h3 id="5-环境变量生效"><a href="#5-环境变量生效" class="headerlink" title="5. 环境变量生效"></a>5. 环境变量生效</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在master上执行</span><br><span class="hljs-built_in">source</span>  ~/.bashrc<br><br><span class="hljs-comment"># 在slave1上执行</span><br>ssh slave2 <span class="hljs-string">&#x27;source  ~/.bashrc&#x27;</span><br><br><span class="hljs-comment"># 在slave2上执行</span><br>ssh slave2 <span class="hljs-string">&#x27;source  ~/.bashrc&#x27;</span><br></code></pre></td></tr></table></figure>
+<h3 id="5-环境变量生效"><a href="#5-环境变量生效" class="headerlink" title="5. 环境变量生效"></a>5. 环境变量生效</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在master上执行</span><br><span class="hljs-built_in">source</span>  ~/.bashrc<br><br><span class="hljs-comment"># 在slave1上执行</span><br>ssh slave1 <span class="hljs-string">&#x27;source  ~/.bashrc&#x27;</span><br><br><span class="hljs-comment"># 在slave2上执行</span><br>ssh slave2 <span class="hljs-string">&#x27;source  ~/.bashrc&#x27;</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="6-启动Hbase"><a href="#6-启动Hbase" class="headerlink" title="6. 启动Hbase"></a>6. 启动Hbase</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">/opt/module/hbase-2.4.11/bin/start-hbase.sh<br></code></pre></td></tr></table></figure>
+<h2 id="安装结束"><a href="#安装结束" class="headerlink" title="安装结束"></a>安装结束</h2><h3 id="6-启动Hbase"><a href="#6-启动Hbase" class="headerlink" title="6. 启动Hbase"></a>6. 启动Hbase</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$HBASE</span>/bin/start-hbase.sh<br></code></pre></td></tr></table></figure>
 
 <h3 id="7-查看Hbase进程"><a href="#7-查看Hbase进程" class="headerlink" title="7. 查看Hbase进程"></a>7. 查看Hbase进程</h3><ul>
-<li><p>hadoop1会有<code>HMaster</code>、<code>HRegionServer</code>的进程</p>
+<li><p>master会有<code>HMaster</code>、<code>HRegionServer</code>的进程</p>
 </li>
-<li><p>hadoop2会有<code>HRegionServer</code>的进程</p>
+<li><p>slave1会有<code>HRegionServer</code>的进程</p>
 </li>
-<li><p>hadoop3会有<code>HRegionServer</code>的进程</p>
+<li><p>slave2会有<code>HRegionServer</code>的进程</p>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 命令</span><br>jps<br></code></pre></td></tr></table></figure>
+
+<h3 id="停止Hbase"><a href="#停止Hbase" class="headerlink" title="停止Hbase"></a>停止Hbase</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">/opt/module/hbase/bin/stop-hbase.sh<br></code></pre></td></tr></table></figure>
 
 <h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
 <li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Andy86666/article/details/127742130">Hbase2.4.11安装_hbase-2.4.11-bin.tar.gz-CSDN博客</a></p>
@@ -451,6 +456,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/11/29/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FSpark%E9%9B%86%E7%BE%A4/" title="搭建分布式Spark集群">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">搭建分布式Spark集群</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

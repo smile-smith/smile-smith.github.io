@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/title.jpg">
+  <link rel="icon" href="/img/title.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="梦想的鱼">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="搭建分布式Hive集群 本次实验环境：Centos 7-2009、Hadoop-3.1.3、OpenJDK 8、Zookeeper-3.6.3、Mysql-5.7.38、Hive-3.1.2  功能规划方案一（本地运行模式）   Master    主节点（Mysql+Hive）   192.168.66.6   方案二（完全分布式模式）   Master Slave1    主节点(Hive)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建分布式Hive集群">
+<meta property="og:url" content="https://smile-smith.github.io/2024/11/29/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FHive%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="搭建分布式Hive集群 本次实验环境：Centos 7-2009、Hadoop-3.1.3、OpenJDK 8、Zookeeper-3.6.3、Mysql-5.7.38、Hive-3.1.2  功能规划方案一（本地运行模式）   Master    主节点（Mysql+Hive）   192.168.66.6   方案二（完全分布式模式）   Master Slave1    主节点(Hive)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-29T15:39:00.000Z">
+<meta property="article:modified_time" content="2024-11-30T16:34:27.554Z">
+<meta property="article:author" content="梦想的鱼">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Hive">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>搭建分布式Hive集群 - </title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"smile-smith.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong></strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="搭建分布式Hive集群"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-29 23:39" pubdate>
+          2024年11月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">搭建分布式Hive集群</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="搭建分布式Hive集群"><a href="#搭建分布式Hive集群" class="headerlink" title="搭建分布式Hive集群"></a>搭建分布式Hive集群</h1><ul>
+<li>本次实验环境：Centos 7-2009、Hadoop-3.1.3、OpenJDK 8、Zookeeper-3.6.3、Mysql-5.7.38、Hive-3.1.2</li>
+</ul>
+<h2 id="功能规划"><a href="#功能规划" class="headerlink" title="功能规划"></a>功能规划</h2><h3 id="方案一（本地运行模式）"><a href="#方案一（本地运行模式）" class="headerlink" title="方案一（本地运行模式）"></a>方案一（本地运行模式）</h3><table>
+<thead>
+<tr>
+<th align="center">Master</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">主节点（Mysql+Hive）</td>
+</tr>
+<tr>
+<td align="center">192.168.66.6</td>
+</tr>
+</tbody></table>
+<h3 id="方案二（完全分布式模式）"><a href="#方案二（完全分布式模式）" class="headerlink" title="方案二（完全分布式模式）"></a>方案二（完全分布式模式）</h3><table>
+<thead>
+<tr>
+<th align="center">Master</th>
+<th align="center">Slave1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">主节点(Hive)</td>
+<td align="center">数据存储节点(Mysql)</td>
+</tr>
+<tr>
+<td align="center">192.168.66.6</td>
+<td align="center">192.168.66.7</td>
+</tr>
+</tbody></table>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><blockquote>
+<p>若使用方案一，则在master节点上进行”准备工作“</p>
+<ul>
+<li>若使用方案二，则在slave1节点上进行“准备工作”</li>
+</ul>
+</blockquote>
+<h3 id="1-卸载以及删除自带的mariadb"><a href="#1-卸载以及删除自带的mariadb" class="headerlink" title="1. 卸载以及删除自带的mariadb"></a>1. 卸载以及删除自带的mariadb</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看cent7自带的mariadb包</span><br>rpm -qa | grep mariadb<br><br><span class="hljs-comment"># 这条是centos7自带的数据库安装包 mariadb-libs-5.5.68-1.el7.x86_64</span><br><br><span class="hljs-comment"># 删除自带的数据库安装包</span><br>rpm -e mariadb-libs-5.5.68-1.el7.x86_64 --nodeps<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-安装Mysql的release文件"><a href="#2-安装Mysql的release文件" class="headerlink" title="2. 安装Mysql的release文件"></a>2. 安装Mysql的release文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用wget下载Mysql5.7.x版本的release文件</span><br>wget -P /opt/ -c <span class="hljs-string">&#x27;https://mirrors.ustc.edu.cn/mysql-repo/mysql57-community-release-el7.rpm&#x27;</span><br><br><span class="hljs-comment"># 使用curl下载Mysql5.7.x版本的release文件</span><br>curl -C - <span class="hljs-string">&#x27;https://mirrors.ustc.edu.cn/mysql-repo/mysql57-community-release-el7.rpm&#x27;</span> -O /opt/<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 导入release的GPG秘钥</span><br>rpm --import https://mirrors.ustc.edu.cn/mysql-repo/RPM-GPG-KEY-mysql<br><br><span class="hljs-comment"># 安装Mysql的release包</span><br>yum install -y /opt/mysql57-community-release-el7.rpm<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-安装Mysql"><a href="#3-安装Mysql" class="headerlink" title="3. 安装Mysql"></a>3. 安装Mysql</h3><h4 id="3-1-（二选一）使用直接通过国内镜像下载依赖包并安装"><a href="#3-1-（二选一）使用直接通过国内镜像下载依赖包并安装" class="headerlink" title="3.1 （二选一）使用直接通过国内镜像下载依赖包并安装"></a>3.1 （二选一）使用直接通过国内镜像下载依赖包并安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 下载mysql-community-server</span><br>wget -P /tmp/ -c <span class="hljs-string">&#x27;https://mirror.tuna.tsinghua.edu.cn/mysql/yum/mysql-5.7-community-el7-x86_64/mysql-community-server-5.7.44-1.el7.x86_64.rpm&#x27;</span><br><br><span class="hljs-comment"># 下载mysql-community-client</span><br>wget -P /tmp/ -c <span class="hljs-string">&#x27;https://mirror.tuna.tsinghua.edu.cn/mysql/yum/mysql-5.7-community-el7-x86_64/mysql-community-client-5.7.44-1.el7.x86_64.rpm&#x27;</span><br><br><span class="hljs-comment"># 下载mysql-community-common</span><br>wget -P /tmp/ -c <span class="hljs-string">&#x27;https://mirror.tuna.tsinghua.edu.cn/mysql/yum/mysql-5.7-community-el7-x86_64/mysql-community-common-5.7.44-1.el7.x86_64.rpm&#x27;</span><br><br><span class="hljs-comment"># 下载mysql-community-libs</span><br>wget -P /tmp/ -c <span class="hljs-string">&#x27;https://mirror.tuna.tsinghua.edu.cn/mysql/yum/mysql-5.7-community-el7-x86_64/mysql-community-libs-5.7.44-1.el7.x86_64.rpm&#x27;</span><br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 安装Mysql-server</span><br>yum install -y /tmp/mysql-community*<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-（二选一）使用国内yum源进行一键安装"><a href="#3-2-（二选一）使用国内yum源进行一键安装" class="headerlink" title="3.2 （二选一）使用国内yum源进行一键安装"></a>3.2 （二选一）使用国内yum源进行一键安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 导入GPG公钥</span><br>rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022<br><br><span class="hljs-comment"># 备份原Mysql的yum源</span><br><span class="hljs-built_in">cd</span> /etc/yum.re[ps.d/<br><span class="hljs-built_in">mv</span> mysql-community.repo mysql-community.repo.bak<br><span class="hljs-built_in">mv</span> mysql-community-source.repo mysql-community-source.repo.bak<br><br><span class="hljs-comment"># 添加国内Mysql的yum源</span><br><span class="hljs-built_in">cat</span> &gt;&gt; mysql-community.repo &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">[mysql-connectors-community]</span><br><span class="hljs-string">name=MySQL Connectors Community</span><br><span class="hljs-string">baseurl=https://mirror.iscas.ac.cn/mysql/yum/mysql-connectors-community-el7-$basearch/</span><br><span class="hljs-string">enabled=1</span><br><span class="hljs-string">gpgcheck=1</span><br><span class="hljs-string">gpgkey=https://repo.mysql.com/RPM-GPG-KEY-mysql</span><br><span class="hljs-string">       https://repo.mysql.com/RPM-GPG-KEY-mysql-2022</span><br><span class="hljs-string"></span><br><span class="hljs-string">[mysql-tools-community]</span><br><span class="hljs-string">name=MySQL Tools Community</span><br><span class="hljs-string">baseurl=https://mirror.iscas.ac.cn/mysql/yum/mysql-tools-community-el7-$basearch/</span><br><span class="hljs-string">enabled=1</span><br><span class="hljs-string">gpgcheck=1</span><br><span class="hljs-string">gpgkey=https://repo.mysql.com/RPM-GPG-KEY-mysql</span><br><span class="hljs-string">       https://repo.mysql.com/RPM-GPG-KEY-mysql-2022</span><br><span class="hljs-string"></span><br><span class="hljs-string">[mysql-5.7-community]</span><br><span class="hljs-string">name=MySQL 5.7 Community Server</span><br><span class="hljs-string">baseurl=https://mirror.iscas.ac.cn/mysql/yum/mysql-5.7-community-el7-$basearch/</span><br><span class="hljs-string">enabled=1</span><br><span class="hljs-string">gpgcheck=1</span><br><span class="hljs-string">gpgkey=https://repo.mysql.com/RPM-GPG-KEY-mysql</span><br><span class="hljs-string">       https://repo.mysql.com/RPM-GPG-KEY-mysql-2022</span><br><span class="hljs-string">EOF</span><br><span class="hljs-comment"># 安装Mysql-server</span><br>yum install -y mysql-server<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-启动Mysql"><a href="#4-启动Mysql" class="headerlink" title="4. 启动Mysql"></a>4. 启动Mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 配置Mysql开机自启</span><br>systemctl <span class="hljs-built_in">enable</span> mysqld<br><br><span class="hljs-comment"># 启动Mysql</span><br>systemctl start mysqld<br><br><span class="hljs-comment"># 查看Mysql状态</span><br>systemctl status mysqld<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-配置Mysql"><a href="#5-配置Mysql" class="headerlink" title="5. 配置Mysql"></a>5. 配置Mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看安装后随机生成的Mysql密码</span><br>grep <span class="hljs-string">&#x27;A temporary password&#x27;</span> /var/log/mysqld.log<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 登录数据库</span><br>mysql -uroot -p<span class="hljs-string">&#x27;你自己查到的密码&#x27;</span><br><br><span class="hljs-comment"># 重置默认的随机密码（不进行无法操作数据库）</span><br>ALTER USER <span class="hljs-string">&#x27;root&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span> IDENTIFIED BY <span class="hljs-string">&#x27;新密码&#x27;</span>;<br><br><span class="hljs-comment"># 退出数据库</span><br><span class="hljs-built_in">exit</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-创建用于存储Hive数据的用户"><a href="#6-创建用于存储Hive数据的用户" class="headerlink" title="6. 创建用于存储Hive数据的用户"></a>6. 创建用于存储Hive数据的用户</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sql"># 必须要先退出服务器，使用新的密码进入数据库才能操作<br>mysql <span class="hljs-operator">-</span>uroot <span class="hljs-operator">-</span>p<span class="hljs-string">&#x27;新密码&#x27;</span><br><br># 创建名为Hiv的数据库<br><span class="hljs-keyword">CREATE</span> DATABASE Hive;<br><br># 创建名为hive的用户，并设置密码<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> <span class="hljs-string">&#x27;hive&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> IDENTIFIED <span class="hljs-keyword">BY</span> <span class="hljs-string">&#x27;hive用户的密码&#x27;</span>;<br><br># 授权hive用户对Hive数据库的所有权限<br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILEGES <span class="hljs-keyword">ON</span> Hive.<span class="hljs-operator">*</span> <span class="hljs-keyword">TO</span> <span class="hljs-string">&#x27;hive&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">GRANT</span> OPTION;<br><br># 刷新权限<br>FLUSH PRIVILEGES;<br><br><br></code></pre></td></tr></table></figure>
+
+<h3 id="7-退出数据库"><a href="#7-退出数据库" class="headerlink" title="7. 退出数据库"></a>7. 退出数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">exit<br></code></pre></td></tr></table></figure>
+
+<h2 id="正式安装Hive"><a href="#正式安装Hive" class="headerlink" title="正式安装Hive"></a>正式安装Hive</h2><blockquote>
+<p>在master主节点上执行</p>
+</blockquote>
+<h3 id="8-安装程序文件"><a href="#8-安装程序文件" class="headerlink" title="8. 安装程序文件"></a>8. 安装程序文件</h3><ul>
+<li>首先上传Hive的文件到服务器上</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 解压文件到指定目录</span><br>tar -zxvf apache-hive-3.1.2-bin.tar.gz -C /opt/module/<br><br><span class="hljs-comment">#重命名文件夹</span><br><span class="hljs-built_in">mv</span> /opt/module/apache-hive-3.1.2-bin/ /opt/module/hive<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="9-解决Hive与Hadoop之间的guava版本差异（依赖冲突）"><a href="#9-解决Hive与Hadoop之间的guava版本差异（依赖冲突）" class="headerlink" title="9. 解决Hive与Hadoop之间的guava版本差异（依赖冲突）"></a>9. 解决Hive与Hadoop之间的guava版本差异（依赖冲突）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 备份hive中原guava的jar包</span><br><span class="hljs-built_in">mv</span> /opt/module/hive/lib/guava-19.0.jar /opt/module/hive/lib/guava-19.0.jar.bak<br><br><span class="hljs-comment"># 使用haddoop中guava-27版本的jar包覆盖hive中的jar包</span><br><span class="hljs-built_in">cp</span> <span class="hljs-variable">$HADOOP_HOME</span>/share/hadoop/common/lib/guava-27.0-jre.jar /opt/module/hive/lib/<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-配置用户环境变量"><a href="#10-配置用户环境变量" class="headerlink" title="10. 配置用户环境变量"></a>10. 配置用户环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt;  ~/.bashrc &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"># ------- Hive 配置-----------</span><br><span class="hljs-string">export HIVE_HOME=/opt/module/hive</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 编辑 ~/.bashrc</span><br>vi  ~/.bashrc<br><br><span class="hljs-comment"># 在PATH中添加 $HIVE_HOME/bin</span><br><br>----------------------------<br>           说明<br><br>举例   <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$JAVA_HOME</span>/bin:<span class="hljs-variable">$HIVE_HOME</span>/bin:<span class="hljs-variable">$PATH</span><br><br>英文冒号代表分隔<br><br>这段代码表示<br>1. 当你输入一个命令时，shell会首先在<span class="hljs-string">&quot;JAVA_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>2. 其次，若找不到，则在<span class="hljs-string">&quot;HIVE_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>3. 最后，若找不到，则在<span class="hljs-string">&quot;PATH&quot;</span>的指定目录中查找<br><br>-----------------------------<br></code></pre></td></tr></table></figure>
+
+<h3 id="11-编写Hive的配置文件"><a href="#11-编写Hive的配置文件" class="headerlink" title="11. 编写Hive的配置文件"></a>11. 编写Hive的配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入hive配置目录</span><br><span class="hljs-built_in">cd</span> /opt/module/hive/conf<br><br><span class="hljs-comment"># 复制hive-env.sh模板</span><br><span class="hljs-built_in">cp</span> hive-env.sh.template hive-env.sh<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">根据自己的配置信息，或者查看~/.bashrc，修改下面各项的内容，随后复制粘贴即可<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 配置hive.env.sh文件</span><br><span class="hljs-built_in">cat</span> &gt;&gt; hive-env.sh &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">export HADOOP_HOME=/opt/module/hadoop</span><br><span class="hljs-string">export HIVE_CONF_DIR=/opt/module/hive/conf</span><br><span class="hljs-string">export HIVE_AUX_JARS_PATH=/opt/module/hive/lib</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="12-编写Hive的配置文件2"><a href="#12-编写Hive的配置文件2" class="headerlink" title="12.编写Hive的配置文件2"></a>12.编写Hive的配置文件2</h3><blockquote>
+<p>如果选择方案一部署，则数据库信息填写master主机的信息，hive服务器填写master主机</p>
+<ul>
+<li>如果选择方案二部署，则数据库信息填写slave1主机的信息填写，hive服务器填写master主机</li>
+</ul>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt; hive-site.xml &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span><br><span class="hljs-string">&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;</span><br><span class="hljs-string">&lt;configuration&gt;</span><br><span class="hljs-string">    &lt;!-- 配置存储元数据的数据库主机以及其他配置 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;jdbc:mysql://hadoop01:3306/hive?createDatabaseIfNotExist=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string">    &lt;!-- 配置连接数据库使用的的驱动名 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string">    &lt;!-- 配置连接数据库的用户名 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;root&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string">    &lt;!-- 配置链接数据库的密码 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;hadoop&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;!-- H2S(Hive服务器)运行绑定的主机 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;hive.server2.thrift.bind.host&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;hadoop01&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;!-- 远程模式部署metastore(元数据)服务的地址（即数据库） --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;hive.metastore.uris&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;thrift://hadoop01:9083&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;!-- 关闭元数据权限的身份认证 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;hive.metastore.event.db.notification.api.auth&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;false&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string"></span><br><span class="hljs-string">    &lt;!-- 关闭元数据存储版本的一致性验证 --&gt;</span><br><span class="hljs-string">    &lt;property&gt;</span><br><span class="hljs-string">        &lt;name&gt;hive.metastore.schema.verification&lt;/name&gt;</span><br><span class="hljs-string">        &lt;value&gt;false&lt;/value&gt;</span><br><span class="hljs-string">    &lt;/property&gt;</span><br><span class="hljs-string">&lt;/configuration&gt;</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="13-使用mysql-connector-java驱动"><a href="#13-使用mysql-connector-java驱动" class="headerlink" title="13. 使用mysql-connector-java驱动"></a>13. 使用mysql-connector-java驱动</h3><blockquote>
+<p>网上找不到5.5、5.6、5.7版本的驱动，官网提供了解决方法：</p>
+<ul>
+<li><code>Connector/J 8.0 provides compatibility with all the functionality of MySQL 5.5, 5.6, 5.7, and 8.0</code>，翻译过来就是说——8.0版本的驱动兼容这些版本，使用8.0版本的驱动就可以了</li>
+</ul>
+</blockquote>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://repo1.maven.org/maven2/mysql/mysql-connector-java/">mysql-connector-java驱动目录1</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://maven.icm.edu.pl/artifactory/repo/mysql/mysql-connector-java/">mysql-connector-java驱动目录2</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/mysql/Connector-J/">mysql-Connector-J安装包下载_开源镜像站-阿里云</a></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 根据你自己的mysql版本，在目录中查找对应版本的驱动，并放到hive主目录下的lib下即可</span><br><span class="hljs-built_in">cp</span> mysql-connector-java-8.0.26.jar /opt/module/hive/lib/<br></code></pre></td></tr></table></figure>
+
+<h2 id="结束安装"><a href="#结束安装" class="headerlink" title="结束安装"></a>结束安装</h2><h3 id="14-加载环境变量"><a href="#14-加载环境变量" class="headerlink" title="14. 加载环境变量"></a>14. 加载环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在master主节点上执行</span><br><span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
+
+<h3 id="15-启动Hive"><a href="#15-启动Hive" class="headerlink" title="15. 启动Hive"></a>15. 启动Hive</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 初始化Hive元数据到Mysql</span><br>schematool -initSchema -dbType mysql<br><br><span class="hljs-comment"># 创建日志目录</span><br><span class="hljs-built_in">mkdir</span> <span class="hljs-variable">$HIVE_HOME</span>/logs<br><br><span class="hljs-comment"># 启动Hive服务</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$HIVE_HOME</span>/logs &amp;&amp; hive --service metastore<br></code></pre></td></tr></table></figure>
+
+<h3 id="16-验证Hive部署是否成功"><a href="#16-验证Hive部署是否成功" class="headerlink" title="16. 验证Hive部署是否成功"></a>16. 验证Hive部署是否成功</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 进入Mysql数据库</span><br>myslq -uroot -p<span class="hljs-string">&#x27;新密码&#x27;</span><br><br><span class="hljs-comment"># 改变使用的数据库</span><br>use Hive;<br><br><span class="hljs-comment"># 查看数据库中的表</span><br>show tables;<br><br><span class="hljs-comment"># 若里面有数据，则部署成功</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="17-后台启动Hive服务"><a href="#17-后台启动Hive服务" class="headerlink" title="17. 后台启动Hive服务"></a>17. 后台启动Hive服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">nohup</span> hive --service metastore &gt; <span class="hljs-variable">$HIVE_HOME</span>/logs/nohup.out 2&gt;&amp;1 &amp;<br></code></pre></td></tr></table></figure>
+
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_74143660/article/details/132897593">Hive3.1.2版本完全分布式安装部署保姆级教程_hive 3.1.2 部署-CSDN博客</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bjynjj/p/18535805">Hive3.1.2搭建文档包含详细步骤及相关截图以及常见问题解决 - bjynjj - 博客园</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/639883986">从零开始搭建分布式大数据环境（Hadoop+Spark+Hive）</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Z_r_s/article/details/133951058">【超详细】CentOS 7安装MySQL 5.7【安装及密码配置、字符集配置、远程连接配置】_mysql contos 密码配置文件-CSDN博客</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1702244">Linux安装软件包的三种方法，rpm包介绍，rpm工具用法，yum工具用法，yum搭建本地仓库-腾讯云开发者社区-腾讯云</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://mirror.tuna.tsinghua.edu.cn/help/mysql/">mysql | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://mirrors.ustc.edu.cn/help/mysql-repo.html">MySQL - USTC Mirror Help</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Z_r_s/article/details/133951058">【超详细】CentOS 7安装MySQL 5.7【安装及密码配置、字符集配置、远程连接配置】_mysql contos 密码配置文件-CSDN博客</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_71602103/article/details/140215449">通过国内mysql镜像站安装Mysql8.0版本服务器——解决方案_mysql国内镜像-CSDN博客</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43102174/article/details/121292951">Maven中找不到mysql-connector-java-5.7.24.jar的依赖_mysql5.7.24对应的jar包版本-CSDN博客</a></p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="category-chain-item">服务器</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
+      
+        <a href="/tags/Hive/" class="print-no-link">#Hive</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>搭建分布式Hive集群</div>
+      <div>https://smile-smith.github.io/2024/11/29/搭建分布式Hive集群/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>梦想的鱼</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年11月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              BY-NC-SA 4.0
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/30/%E5%AE%89%E8%A3%85MongoDB/" title="安装MongoDB">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">安装MongoDB</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/29/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FSpark%E9%9B%86%E7%BE%A4/" title="搭建分布式Spark集群">
+                        <span class="hidden-mobile">搭建分布式Spark集群</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div>
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+ var now = new Date();
+function createtime(){
+   var grt= new Date("10/10/2024 00:00:00");//此处修改你的建站时间或者网站上线时间
+   now.setTime(now.getTime()+250);
+   days = (now - grt ) / 1000 / 60 / 60 / 24;
+   dnum = Math.floor(days);
+   hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+   hnum = Math.floor(hours);
+   if(String(hnum).length ==1 ){
+        hnum = "0" + hnum;
+   }
+   minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+   mnum = Math.floor(minutes);
+   if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+   }
+   seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+   snum = Math.round(seconds);
+   if(String(snum).length ==1 ){
+                snum = "0" + snum;
+   }
+   document.getElementById("timeDate").innerHTML = "本站已安全运行"+dnum+" 天 "; 
+   document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+} //此处自定义显示内容 
+setInterval("createtime()",250);
+</script>
+</div>
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
