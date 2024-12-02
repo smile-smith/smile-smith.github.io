@@ -21,15 +21,15 @@
   <meta name="author" content="梦想的鱼">
   <meta name="keywords" content="">
   
-    <meta name="description" content="安装MongoDB 本次实验环境：Centos 7-2009  功能规划   Master    主节点   192.168.66.6   1. 创建MongoDB的国内yum源12345678# 下载Centos7对应最新版7.0.15的安装包cat &gt;&gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb.repo &lt;&lt; EOF[mongodb-org]name&#x3D;Mong">
+    <meta name="description" content="搭建MongoDB 环境：Centos 7-2009  1. 创建MongoDB的国内yum源12345678# 下载Centos7对应最新版7.0.15的安装包cat &gt;&gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb.repo &lt;&lt; EOF[mongodb-org]name&#x3D;MongoDB Repositorybaseurl&#x3D;https:&#x2F;&#x2F;mirrors.cern">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安装MongoDB">
-<meta property="og:url" content="https://smile-smith.github.io/2024/11/30/%E5%AE%89%E8%A3%85MongoDB/index.html">
+<meta property="og:title" content="搭建MongoDB">
+<meta property="og:url" content="https://smile-smith.github.io/2024/11/30/%E6%90%AD%E5%BB%BAMongoDB/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="安装MongoDB 本次实验环境：Centos 7-2009  功能规划   Master    主节点   192.168.66.6   1. 创建MongoDB的国内yum源12345678# 下载Centos7对应最新版7.0.15的安装包cat &gt;&gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb.repo &lt;&lt; EOF[mongodb-org]name&#x3D;Mong">
+<meta property="og:description" content="搭建MongoDB 环境：Centos 7-2009  1. 创建MongoDB的国内yum源12345678# 下载Centos7对应最新版7.0.15的安装包cat &gt;&gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb.repo &lt;&lt; EOF[mongodb-org]name&#x3D;MongoDB Repositorybaseurl&#x3D;https:&#x2F;&#x2F;mirrors.cern">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-30T15:30:00.000Z">
-<meta property="article:modified_time" content="2024-11-30T16:32:30.054Z">
+<meta property="article:modified_time" content="2024-12-02T05:39:18.347Z">
 <meta property="article:author" content="梦想的鱼">
 <meta property="article:tag" content="大数据">
 <meta property="article:tag" content="MongoDB">
@@ -39,7 +39,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>安装MongoDB - </title>
+  <title>搭建MongoDB - </title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="安装MongoDB"></span>
+            <span id="subtitle" data-typed-text="搭建MongoDB"></span>
           
         </div>
 
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          230 字
+          216 字
         
       </span>
     
@@ -285,30 +285,17 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">安装MongoDB</h1>
+            <h1 id="seo-header">搭建MongoDB</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="安装MongoDB"><a href="#安装MongoDB" class="headerlink" title="安装MongoDB"></a>安装MongoDB</h1><ul>
-<li>本次实验环境：Centos 7-2009</li>
+                <h1 id="搭建MongoDB"><a href="#搭建MongoDB" class="headerlink" title="搭建MongoDB"></a>搭建MongoDB</h1><ul>
+<li>环境：Centos 7-2009</li>
 </ul>
-<h2 id="功能规划"><a href="#功能规划" class="headerlink" title="功能规划"></a>功能规划</h2><table>
-<thead>
-<tr>
-<th align="center">Master</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">主节点</td>
-</tr>
-<tr>
-<td align="center">192.168.66.6</td>
-</tr>
-</tbody></table>
 <h2 id="1-创建MongoDB的国内yum源"><a href="#1-创建MongoDB的国内yum源" class="headerlink" title="1. 创建MongoDB的国内yum源"></a>1. 创建MongoDB的国内yum源</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 下载Centos7对应最新版7.0.15的安装包</span><br><span class="hljs-built_in">cat</span> &gt;&gt; /etc/yum.repos.d/mongodb.repo &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">[mongodb-org]</span><br><span class="hljs-string">name=MongoDB Repository</span><br><span class="hljs-string">baseurl=https://mirrors.cernet.edu.cn/mongodb/yum/el$releasever/</span><br><span class="hljs-string">gpgcheck=0</span><br><span class="hljs-string">enabled=1</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="安装MongoDB-1"><a href="#安装MongoDB-1" class="headerlink" title="安装MongoDB"></a>安装MongoDB</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 刷新yum缓存</span><br><span class="hljs-built_in">sudo</span> yum makecache<br><br><span class="hljs-comment"># 安装MongoDB</span><br><span class="hljs-built_in">sudo</span> yum install -y mongodb-org <br></code></pre></td></tr></table></figure>
+<h2 id="安装MongoDB"><a href="#安装MongoDB" class="headerlink" title="安装MongoDB"></a>安装MongoDB</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 刷新yum缓存</span><br><span class="hljs-built_in">sudo</span> yum makecache<br><br><span class="hljs-comment"># 安装MongoDB</span><br><span class="hljs-built_in">sudo</span> yum install -y mongodb-org <br></code></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 修改监听的ip地址为任何地址（并开启IPV6），否则无法远程连接MongoDB数据库</span><br>sed -i <span class="hljs-string">&#x27;s|bindIp: 127.0.0.1|bindIp: 0.0.0.0,::|&#x27;</span> /etc/mongod.conf <br></code></pre></td></tr></table></figure>
 
@@ -321,7 +308,6 @@
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenlixiao007/article/details/110206062">Linux CentOS7 环境下安装 MongoDB_linux centos7 安装mongo客户端-CSDN博客</a></p>
 </li>
-<li></li>
 <li><p><a target="_blank" rel="noopener" href="https://help.mirrors.cernet.edu.cn/mongodb/">MongoDB 软件仓库镜像使用帮助 - MirrorZ Help</a></p>
 </li>
 </ol>
@@ -372,8 +358,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>安装MongoDB</div>
-      <div>https://smile-smith.github.io/2024/11/30/安装MongoDB/</div>
+      <div>搭建MongoDB</div>
+      <div>https://smile-smith.github.io/2024/11/30/搭建MongoDB/</div>
     </div>
     <div class="license-meta">
       
@@ -409,6 +395,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/11/30/%E6%90%AD%E5%BB%BAFlume/" title="搭建Flume">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">搭建Flume</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
