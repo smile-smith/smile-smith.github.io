@@ -18,7 +18,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="梦想的鱼">
+  <meta name="author" content="smile smith">
   <meta name="keywords" content="">
   
     <meta name="description" content="问题：《现在无法访问 XXX.com，因为网站使用的是 HSTS。网络错误和攻击通常是暂时的，因此该页面以后可能会恢复正常》 解决： 在当前页面直接输入thisisunsafe(不是地址栏，真的是鼠标往那里一甩，直接就打字)，甚至回车都不用，就直接进去了。至于原因。不知道真不真：其实就是一个Chromium内置的后门（ edge 也是基于chorme），特地写成 thisis unsafe 就是让">
@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-10-26T03:32:20.000Z">
 <meta property="article:modified_time" content="2024-11-30T16:39:32.643Z">
-<meta property="article:author" content="梦想的鱼">
+<meta property="article:author" content="smile smith">
 <meta property="article:tag" content="Windows">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -212,6 +212,11 @@
           
   <div class="mt-3">
     
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        smile smith
+      </span>
+    
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
@@ -345,7 +350,7 @@
 </div>
 
 
-              
+               
   
 
   <div class="license-box my-3">
@@ -357,7 +362,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>梦想的鱼</div>
+          <div>smile smith</div>
         </div>
       
       
@@ -377,7 +382,26 @@
           <div>许可协议</div>
           <div>
             
-              BY-NC-SA 4.0
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
             
           </div>
         </div>
@@ -560,12 +584,12 @@
   
   
     <div>
-<span id="timeDate">载入天数...</span>
+<span id="timeDate">正在载入天数...</span>
 <span id="times">载入时分秒...</span>
 <script>
  var now = new Date();
 function createtime(){
-   var grt= new Date("10/10/2024 00:00:00");//此处修改你的建站时间或者网站上线时间
+   var grt= new Date("10/16/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
    now.setTime(now.getTime()+250);
    days = (now - grt ) / 1000 / 60 / 60 / 24;
    dnum = Math.floor(days);
@@ -584,8 +608,8 @@ function createtime(){
    if(String(snum).length ==1 ){
                 snum = "0" + snum;
    }
-   document.getElementById("timeDate").innerHTML = "本站已安全运行"+dnum+" 天 "; 
-   document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+   document.getElementById("timeDate").innerHTML = "🚀本站已安全运行"+dnum+" 天 "; 
+   document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒🚀"; 
 } //此处自定义显示内容 
 setInterval("createtime()",250);
 </script>
