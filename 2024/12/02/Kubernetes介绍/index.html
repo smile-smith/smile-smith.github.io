@@ -21,25 +21,27 @@
   <meta name="author" content="梦想的鱼">
   <meta name="keywords" content="">
   
-    <meta name="description" content="搭建Flume 本次实验环境：Centos 7-2009、OpenJDK 8、Flume-1.11.0  开始安装1. 下载安装文件到服务器12345# 使用wget# 使用curl下载Mysql5.7.x版本的release文件wget -P &#x2F;opt&#x2F; -c &#x27;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;apache&#x2F;flume&#x2F;1.11.0&#x2F;apache-flume-1.">
+    <meta name="description" content="Kubernetes介绍它是一个为容器化应用提供集群部署和管理的开源工具； 特性 高可用、不宕机、自动灾难恢复  灰度更新，不影响业务正常流转  一键回滚到历史版本  方柏霓的伸缩扩展（应用伸缩、机器加减）、提供负载均衡  有一个完善的生态   应用的部署方式 传统部署（物理机部署）  应用直接部署在物理机上，机器资源分配不好控制；出现Bug时，可能机器的大部分载运被某个应用占用，会导致其他应用无">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建Flume">
-<meta property="og:url" content="https://smile-smith.github.io/2024/11/30/%E6%90%AD%E5%BB%BAFlume/index.html">
+<meta property="og:title" content="Kubernetes简介">
+<meta property="og:url" content="https://smile-smith.github.io/2024/12/02/Kubernetes%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="搭建Flume 本次实验环境：Centos 7-2009、OpenJDK 8、Flume-1.11.0  开始安装1. 下载安装文件到服务器12345# 使用wget# 使用curl下载Mysql5.7.x版本的release文件wget -P &#x2F;opt&#x2F; -c &#x27;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;apache&#x2F;flume&#x2F;1.11.0&#x2F;apache-flume-1.">
+<meta property="og:description" content="Kubernetes介绍它是一个为容器化应用提供集群部署和管理的开源工具； 特性 高可用、不宕机、自动灾难恢复  灰度更新，不影响业务正常流转  一键回滚到历史版本  方柏霓的伸缩扩展（应用伸缩、机器加减）、提供负载均衡  有一个完善的生态   应用的部署方式 传统部署（物理机部署）  应用直接部署在物理机上，机器资源分配不好控制；出现Bug时，可能机器的大部分载运被某个应用占用，会导致其他应用无">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-11-30T15:59:00.000Z">
-<meta property="article:modified_time" content="2024-12-02T06:00:55.638Z">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-07-29-10-55-21-image.png">
+<meta property="og:image" content="https://smile-smith.github.io/img/assets/2024-07-29-11-05-39-image.png">
+<meta property="article:published_time" content="2024-12-02T13:23:20.000Z">
+<meta property="article:modified_time" content="2024-12-07T12:12:57.132Z">
 <meta property="article:author" content="梦想的鱼">
-<meta property="article:tag" content="大数据">
-<meta property="article:tag" content="Flume">
+<meta property="article:tag" content="云计算">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://smile-smith.github.io/img/assets/2024-07-29-10-55-21-image.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>搭建Flume - </title>
+  <title>Kubernetes简介 - </title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +207,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="搭建Flume"></span>
+            <span id="subtitle" data-typed-text="Kubernetes简介"></span>
           
         </div>
 
@@ -216,8 +218,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-11-30 23:59" pubdate>
-          2024年11月30日 晚上
+        <time datetime="2024-12-02 21:23" pubdate>
+          2024年12月2日 晚上
         </time>
       </span>
     
@@ -228,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          859 字
+          702 字
         
       </span>
     
@@ -239,7 +241,7 @@
         
         
         
-          8 分钟
+          6 分钟
         
       </span>
     
@@ -285,54 +287,73 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">搭建Flume</h1>
+            <h1 id="seo-header">Kubernetes简介</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="搭建Flume"><a href="#搭建Flume" class="headerlink" title="搭建Flume"></a>搭建Flume</h1><ul>
-<li>本次实验环境：Centos 7-2009、OpenJDK 8、Flume-1.11.0</li>
-</ul>
-<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="1-下载安装文件到服务器"><a href="#1-下载安装文件到服务器" class="headerlink" title="1. 下载安装文件到服务器"></a>1. 下载安装文件到服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用wget# 使用curl下载Mysql5.7.x版本的release文件</span><br>wget -P /opt/ -c <span class="hljs-string">&#x27;https://mirrors.aliyun.com/apache/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz&#x27;</span><br><br><span class="hljs-comment"># 使用curl命令下载文件</span><br>curl -C - <span class="hljs-string">&#x27;https://mirrors.aliyun.com/apache/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz&#x27;</span> -O /opt/<br></code></pre></td></tr></table></figure>
-
-<h3 id="2-安装程序"><a href="#2-安装程序" class="headerlink" title="2. 安装程序"></a>2. 安装程序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 解压文件到指定文件夹</span><br>tar -zxvf /opt/apache-flume-1.11.0-bin.tar.gz -C /opt/module/<br><br><span class="hljs-comment"># 重命名文件夹</span><br><span class="hljs-built_in">mv</span> /opt/module/apache-flume-1.11.0-bin /opt/module/flume<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-修改配置文件"><a href="#3-修改配置文件" class="headerlink" title="3. 修改配置文件"></a>3. 修改配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 复制配置文件</span><br><span class="hljs-built_in">cp</span> /opt/module/flume/conf/flume-env.sh.template /opt/module/flume/conf/flume-env.sh<br><br><span class="hljs-comment"># 添加JAVA配置</span><br>---------------------------<br>           说明<br>根据自己的配置信息，或者查看~/.bashrc，修改JAVA_HOME的目录，随后复制粘贴即可<br><br>---------------------------<br><br><span class="hljs-built_in">cat</span> &gt;&gt; /opt/module/flume/conf/flume-env.sh &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">export JAVA_HOME=/usr/java/jdk1.8.0_281-amd64</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="4-配置用户环境变量"><a href="#4-配置用户环境变量" class="headerlink" title="4. 配置用户环境变量"></a>4. 配置用户环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt;  ~/.bashrc &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string"># ------- Flume 配置-----------</span><br><span class="hljs-string">export FLUME_HOME=/opt/module/flume</span><br><span class="hljs-string">export FLUME_CONF_DIR=$FLUME_HOME/conf</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 编辑 ~/.bashrc</span><br>vi  ~/.bashrc<br><br><span class="hljs-comment"># 在PATH中添加 $FLUME_HOME/bin</span><br><br>----------------------------<br>           说明<br><br>举例   <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$JAVA_HOME</span>/bin:<span class="hljs-variable">$FLUME_HOME</span>/bin:<span class="hljs-variable">$PATH</span><br><br>英文冒号代表分隔<br><br>这段代码表示<br>1. 当你输入一个命令时，shell会首先在<span class="hljs-string">&quot;JAVA_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>2. 其次，若找不到，则在<span class="hljs-string">&quot;FLUME_HOME&quot;</span>这个变量的<span class="hljs-string">&quot;bin&quot;</span>子目录中查找，<br>3. 最后，若找不到，则在<span class="hljs-string">&quot;PATH&quot;</span>的指定目录中查找<br><br>-----------------------------<br></code></pre></td></tr></table></figure>
-
-<h2 id="安装完成"><a href="#安装完成" class="headerlink" title="安装完成"></a>安装完成</h2><h3 id="5-测试"><a href="#5-测试" class="headerlink" title="5. 测试"></a>5. 测试</h3><blockquote>
-<ul>
-<li><p>a1.sources.r1.command&#x3D;tail -F &#x2F;opt&#x2F;module&#x2F;flume&#x2F;test&#x2F;1.log</p>
+                <h1 id="Kubernetes介绍"><a href="#Kubernetes介绍" class="headerlink" title="Kubernetes介绍"></a>Kubernetes介绍</h1><p>它是一个为容器化应用提供集群部署和管理的开源工具；</p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li><p>高可用、不宕机、自动灾难恢复</p>
 </li>
-<li><p>a1.sinks.k1.hdfs.path&#x3D;hdfs:&#x2F;&#x2F;master:8020&#x2F;flume&#x2F;<br>这两条需要按照自己的路径修改，并创建test文件和1.log文件用于测试</p>
+<li><p>灰度更新，不影响业务正常流转</p>
+</li>
+<li><p>一键回滚到历史版本</p>
+</li>
+<li><p>方柏霓的伸缩扩展（应用伸缩、机器加减）、提供负载均衡</p>
+</li>
+<li><p>有一个完善的生态</p>
 </li>
 </ul>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt; /opt/module/flume/conf/hdfs-avro.conf &lt;&lt; <span class="hljs-string">EOF</span><br><span class="hljs-string">#配置Agent</span><br><span class="hljs-string">a1.sources = r1</span><br><span class="hljs-string">#数据沉淀，可以多个，中间用空格分隔</span><br><span class="hljs-string">a1.sinks = c1</span><br><span class="hljs-string">#传输管道一般只有一个，可以多个</span><br><span class="hljs-string">a1.channels = c1</span><br><span class="hljs-string"></span><br><span class="hljs-string">#配置source消息生产者</span><br><span class="hljs-string">#exec可以通过制定的操作对日志进行读取，使用exec时需要指定xsheel命令，对日志进行读取</span><br><span class="hljs-string">a1.sources.r1.type=exec</span><br><span class="hljs-string">a1.sources.r1.command=tail -F /opt/module/flume/test/1.log</span><br><span class="hljs-string"></span><br><span class="hljs-string">#配置channel，将buffer事件存放在内存中，相当于数据缓存区，接受source数据发送给sink</span><br><span class="hljs-string">#传输管道的参数，类型是内存传输</span><br><span class="hljs-string">a1.channels.c1.type=memory</span><br><span class="hljs-string">#存储在通管中的最大事件数</span><br><span class="hljs-string">a1.channels.c1.capactipy=100</span><br><span class="hljs-string">#收集端的sink会在收集到了1000条以后再去提交失误</span><br><span class="hljs-string">a1.channels.c1.transactionCapcity=10</span><br><span class="hljs-string"></span><br><span class="hljs-string">#配置sink接收器</span><br><span class="hljs-string">#沉淀方式时控制台答应，还可以有其他方式，如上传到hdfs</span><br><span class="hljs-string">a1.sinks.k1.type=hdfs</span><br><span class="hljs-string">#设置hdfs接收器</span><br><span class="hljs-string">a1.sinks.k1.hdfs.path=hdfs://master:8020/flume</span><br><span class="hljs-string"></span><br><span class="hljs-string">#设置</span><br><span class="hljs-string">a1.sinks.k1.hdfs.filePrefix=test</span><br><span class="hljs-string">a1.sinks.k1.hdfs.fileType=DataStream</span><br><span class="hljs-string"></span><br><span class="hljs-string">#把source和sink绑定在channel上</span><br><span class="hljs-string">#指定传输管道</span><br><span class="hljs-string">a1.sources.r1.channels=c1</span><br><span class="hljs-string">#设置数据沉淀接受的管道</span><br><span class="hljs-string">a1.sinks.k1.channel=c1</span><br><span class="hljs-string"></span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="6-前台启动Flume"><a href="#6-前台启动Flume" class="headerlink" title="6. 前台启动Flume"></a>6. 前台启动Flume</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$FLUME_HOME</span>/bin/flume-ng agent -c <span class="hljs-variable">$FLUME_HOME</span>/conf -f <span class="hljs-variable">$FLUME_HOME</span>/conf/hdfs-avro.conf -n a1 -Dflume.root.logger=INFO,console<br></code></pre></td></tr></table></figure>
-
-<h3 id="7-后台启动Flume"><a href="#7-后台启动Flume" class="headerlink" title="7. 后台启动Flume"></a>7. 后台启动Flume</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建日志文件目录</span><br><span class="hljs-built_in">mkdir</span> /opt/module/flume/logs<br><span class="hljs-comment"># 在master节点上执行</span><br><span class="hljs-built_in">nohup</span> <span class="hljs-variable">$FLUME_HOME</span>/bin/flume-ng agent -c <span class="hljs-variable">$FLUME_HOME</span>/conf -f <span class="hljs-variable">$FLUME_HOME</span>/conf/hdfs-avro.conf -n a1 -Dflume.root.logger=INFO,console &gt; <span class="hljs-variable">$FLUME_HOME</span>/logs/nohup.out 2&gt;&amp;1 &amp;<br></code></pre></td></tr></table></figure>
-
-<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
-<li><p><a target="_blank" rel="noopener" href="https://flume.apache.org/download.html">Download &mdash; Apache Flume</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.lua/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz">Apache Download Mirrors</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://archive.apache.org/dist/flume/">Index of &#x2F;dist&#x2F;flume</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/NITIQ/article/details/121435178">hadoop-flume完全分布式集群搭建-CSDN博客</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuanfeng10/articles/18294886">flume-1.11.0 - Bigdata_Yuan - 博客园</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/shanxiderenheni/article/details/132729592">flume1.11.0安装部署-CSDN博客</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/apache/flume/1.11.0/">apache-flume-1.11.0安装包下载_开源镜像站-阿里云</a></p>
-</li>
+<h2 id="应用的部署方式"><a href="#应用的部署方式" class="headerlink" title="应用的部署方式"></a>应用的部署方式</h2><ol>
+<li>传统部署（物理机部署）</li>
 </ol>
+<p>应用直接部署在物理机上，机器资源分配不好控制；出现Bug时，可能机器的大部分载运被某个应用占用，会导致其他应用无法正常运行，无法做到应用隔离</p>
+<ol start="2">
+<li>虚拟机部署</li>
+</ol>
+<p>在单个物理机上运行多个虚拟机，诶个虚拟机都是完整独立的系统，性能损耗大</p>
+<ol start="3">
+<li>容器部署</li>
+</ol>
+<p>所有容器共享主机的系统，轻量级的虚拟机，性能损耗小，资源隔离，CPU和内存可按需分配</p>
+<h2 id="什么时候需要"><a href="#什么时候需要" class="headerlink" title="什么时候需要"></a>什么时候需要</h2><ul>
+<li><p>如果应用只跑在一台机器上，docker+(docker-compose)就够了，方便轻松；</p>
+</li>
+<li><p>如果应用需要跑在3、4台机器上，docker+(docker-compose)+负载均衡器也能解决；</p>
+</li>
+<li><p>当应用的访问数不断增加，机器数逐渐增加，这时候k8s就能轻松管理百千万台机器的集群</p>
+</li>
+</ul>
+<h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="/img/assets/2024-07-29-10-55-21-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><p>主节点，控制平台，不需要很高的性能，不会跑任务，通常一个就行；也可以增加多个主节点来提高系统的可用性</p>
+<h3 id="woker"><a href="#woker" class="headerlink" title="woker"></a>woker</h3><p>工作节点，可以是虚拟机或物理计算机，任务都在这里运行；这里的机器性能需要好点，通常有很多个这样的节点；每一个工作节点都由主节点管理；</p>
+<h3 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h3><p>是k8s调度、管理的最小单位，一个Pod可以包含一个或多个容器，每一个Pod都有自己的虚拟ip，一个工作节点可以拥有多个pod，主节点会考量每一个工作节点的负载，随后自动调度pod到哪个节点运行；</p>
+<h2 id="kubernetes组件"><a href="#kubernetes组件" class="headerlink" title="kubernetes组件"></a>kubernetes组件</h2><p><img src="/img/assets/2024-07-29-11-05-39-image.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li><p>kube-apiserver：API服务器，公开了kubernetes的api</p>
+</li>
+<li><p>etcd：键值数据库，可以作为保存kubernetes所有集群数据的后台数据库</p>
+</li>
+<li><p>kube-scheduler：调度Pod到哪个节点运行</p>
+</li>
+<li><p>kube-controller：集群控制器</p>
+</li>
+<li><p>cloud-controller：与云服务商进行交互</p>
+</li>
+</ul>
+<h2 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h2><ol>
+<li>minikube</li>
+</ol>
+<p>只是一个k8s集群模拟器，只有一个节点的集群，只为测试用，master和worker都在一起</p>
+<ol start="2">
+<li>直接用云平台安装kubernettes</li>
+</ol>
+<p>可视化搭建，只需几步就可以创建好一个集群，生态齐全</p>
+<ol start="3">
+<li>裸机安装(bare metal)</li>
+</ol>
+<p>至少需要两台机器（主节点、工作节点各一台），需要自己安装kubernetes组件，配置麻烦，缺少生态支持；</p>
 
                 
               </div>
@@ -366,9 +387,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
-      
-        <a href="/tags/Flume/" class="print-no-link">#Flume</a>
+        <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" class="print-no-link">#云计算</a>
       
     </div>
   
@@ -380,8 +399,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>搭建Flume</div>
-      <div>https://smile-smith.github.io/2024/11/30/搭建Flume/</div>
+      <div>Kubernetes简介</div>
+      <div>https://smile-smith.github.io/2024/12/02/Kubernetes介绍/</div>
     </div>
     <div class="license-meta">
       
@@ -393,7 +412,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年11月30日</div>
+          <div>2024年12月2日</div>
         </div>
       
       
@@ -418,18 +437,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/01/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FKafka%E9%9B%86%E7%BE%A4/" title="搭建分布式Kafka集群">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">搭建分布式Kafka集群</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/11/30/%E6%90%AD%E5%BB%BAMongoDB/" title="搭建MongoDB">
-                        <span class="hidden-mobile">搭建MongoDB</span>
+                      <a href="/2024/12/01/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FKafka%E9%9B%86%E7%BE%A4/" title="搭建分布式Kafka集群">
+                        <span class="hidden-mobile">搭建分布式Kafka集群</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

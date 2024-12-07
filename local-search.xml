@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Kubernetes简介</title>
+    <link href="/2024/12/02/Kubernetes%E4%BB%8B%E7%BB%8D/"/>
+    <url>/2024/12/02/Kubernetes%E4%BB%8B%E7%BB%8D/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Kubernetes介绍"><a href="#Kubernetes介绍" class="headerlink" title="Kubernetes介绍"></a>Kubernetes介绍</h1><p>它是一个为容器化应用提供集群部署和管理的开源工具；</p><h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul><li><p>高可用、不宕机、自动灾难恢复</p></li><li><p>灰度更新，不影响业务正常流转</p></li><li><p>一键回滚到历史版本</p></li><li><p>方柏霓的伸缩扩展（应用伸缩、机器加减）、提供负载均衡</p></li><li><p>有一个完善的生态</p></li></ul><h2 id="应用的部署方式"><a href="#应用的部署方式" class="headerlink" title="应用的部署方式"></a>应用的部署方式</h2><ol><li>传统部署（物理机部署）</li></ol><p>应用直接部署在物理机上，机器资源分配不好控制；出现Bug时，可能机器的大部分载运被某个应用占用，会导致其他应用无法正常运行，无法做到应用隔离</p><ol start="2"><li>虚拟机部署</li></ol><p>在单个物理机上运行多个虚拟机，诶个虚拟机都是完整独立的系统，性能损耗大</p><ol start="3"><li>容器部署</li></ol><p>所有容器共享主机的系统，轻量级的虚拟机，性能损耗小，资源隔离，CPU和内存可按需分配</p><h2 id="什么时候需要"><a href="#什么时候需要" class="headerlink" title="什么时候需要"></a>什么时候需要</h2><ul><li><p>如果应用只跑在一台机器上，docker+(docker-compose)就够了，方便轻松；</p></li><li><p>如果应用需要跑在3、4台机器上，docker+(docker-compose)+负载均衡器也能解决；</p></li><li><p>当应用的访问数不断增加，机器数逐渐增加，这时候k8s就能轻松管理百千万台机器的集群</p></li></ul><h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="/img/assets/2024-07-29-10-55-21-image.png"></p><h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><p>主节点，控制平台，不需要很高的性能，不会跑任务，通常一个就行；也可以增加多个主节点来提高系统的可用性</p><h3 id="woker"><a href="#woker" class="headerlink" title="woker"></a>woker</h3><p>工作节点，可以是虚拟机或物理计算机，任务都在这里运行；这里的机器性能需要好点，通常有很多个这样的节点；每一个工作节点都由主节点管理；</p><h3 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h3><p>是k8s调度、管理的最小单位，一个Pod可以包含一个或多个容器，每一个Pod都有自己的虚拟ip，一个工作节点可以拥有多个pod，主节点会考量每一个工作节点的负载，随后自动调度pod到哪个节点运行；</p><h2 id="kubernetes组件"><a href="#kubernetes组件" class="headerlink" title="kubernetes组件"></a>kubernetes组件</h2><p><img src="/img/assets/2024-07-29-11-05-39-image.png"></p><ul><li><p>kube-apiserver：API服务器，公开了kubernetes的api</p></li><li><p>etcd：键值数据库，可以作为保存kubernetes所有集群数据的后台数据库</p></li><li><p>kube-scheduler：调度Pod到哪个节点运行</p></li><li><p>kube-controller：集群控制器</p></li><li><p>cloud-controller：与云服务商进行交互</p></li></ul><h2 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h2><ol><li>minikube</li></ol><p>只是一个k8s集群模拟器，只有一个节点的集群，只为测试用，master和worker都在一起</p><ol start="2"><li>直接用云平台安装kubernettes</li></ol><p>可视化搭建，只需几步就可以创建好一个集群，生态齐全</p><ol start="3"><li>裸机安装(bare metal)</li></ol><p>至少需要两台机器（主节点、工作节点各一台），需要自己安装kubernetes组件，配置麻烦，缺少生态支持；</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>服务器</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>云计算</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>搭建分布式Kafka集群</title>
     <link href="/2024/12/01/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FKafka%E9%9B%86%E7%BE%A4/"/>
     <url>/2024/12/01/%E6%90%AD%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8FKafka%E9%9B%86%E7%BE%A4/</url>
@@ -47,9 +72,9 @@
     
     <tags>
       
-      <tag>Flume</tag>
-      
       <tag>大数据</tag>
+      
+      <tag>Flume</tag>
       
     </tags>
     
@@ -263,17 +288,17 @@
       
       <tag>大数据</tag>
       
-      <tag>HBase</tag>
-      
       <tag>Hadoop</tag>
+      
+      <tag>ZooKeeper</tag>
       
       <tag>Kafka</tag>
       
       <tag>Spark</tag>
       
-      <tag>ZooKeeper</tag>
-      
       <tag>Storm</tag>
+      
+      <tag>HBase</tag>
       
     </tags>
     
@@ -361,7 +386,7 @@
     <link href="/2024/11/01/SSHpass%E5%B7%A5%E5%85%B7/"/>
     <url>/2024/11/01/SSHpass%E5%B7%A5%E5%85%B7/</url>
     
-    <content type="html"><![CDATA[<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sshpass -p &#x27;123456&#x27; ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -tt test@127.0.0.1  &quot;exit&quot; &amp;<br></code></pre></td></tr></table></figure><h1 id="命令参数解释"><a href="#命令参数解释" class="headerlink" title="命令参数解释"></a>命令参数解释</h1><p><code>sshpass -p</code>：这是将ssh密码作为参数传递给ssh命令，免去手动输入ssh密码的麻烦；</p><p><code>ssh</code>：这是用来安全地访问远程服务器的命令；</p><p><code>-o StrictHostKeyChecking=no</code>：这个选项告诉SSH在连接到新的或未知的主机时，不需要进行严格的主机密钥检查。这意味着SSH不会在<code>~/.ssh/known_hosts</code>文件中检查远程主机的公钥，并且不会提示用户确认是否信任该主机。这可以提高自动化脚本的灵活性，但会降低安全性，因为它使SSH连接更容易受到中间人攻击；</p><p><code>-o UserKnownHostsFile=/dev/null</code>：这个选项指定了SSH用于存储已知主机密钥的文件。在这个例子中，它被设置为&#x2F;dev&#x2F;null，这意味着所有已知的主机信息都会被丢弃，SSH不会存储任何关于连接过的主机的信息。这进一步降低了安全性，因为它消除了主机密钥验证的任何痕迹；</p><p><code>-tt</code>：这个选项强制SSH分配一个伪终端。即使执行的命令是非交互式的（如本例中的exit命令），也会分配伪终端。这在某些情况下很有用，例如确保远程命令的执行环境与交互式登录相似；</p><p><a href="mailto:&#x75;&#115;&#101;&#x72;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;">&#x75;&#115;&#101;&#x72;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;</a>：这是你想要连接的远程主机的用户名和地址；</p><p><code>&quot;exit&quot;</code>：这是在远程主机上执行的命令。在这个例子中，命令是exit，它将立即结束会话；</p><p><code>&amp;</code>：这个符号将SSH命令放入后台执行。这意味着你可以在本地机器上继续工作，而不必等待SSH会话结束</p>]]></content>
+    <content type="html"><![CDATA[<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sshpass -p &#x27;123456&#x27; ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -tt test@127.0.0.1  &quot;exit&quot; &amp;<br></code></pre></td></tr></table></figure><h1 id="命令参数解释"><a href="#命令参数解释" class="headerlink" title="命令参数解释"></a>命令参数解释</h1><p><code>sshpass -p</code>：这是将ssh密码作为参数传递给ssh命令，免去手动输入ssh密码的麻烦；</p><p><code>ssh</code>：这是用来安全地访问远程服务器的命令；</p><p><code>-o StrictHostKeyChecking=no</code>：这个选项告诉SSH在连接到新的或未知的主机时，不需要进行严格的主机密钥检查。这意味着SSH不会在<code>~/.ssh/known_hosts</code>文件中检查远程主机的公钥，并且不会提示用户确认是否信任该主机。这可以提高自动化脚本的灵活性，但会降低安全性，因为它使SSH连接更容易受到中间人攻击；</p><p><code>-o UserKnownHostsFile=/dev/null</code>：这个选项指定了SSH用于存储已知主机密钥的文件。在这个例子中，它被设置为&#x2F;dev&#x2F;null，这意味着所有已知的主机信息都会被丢弃，SSH不会存储任何关于连接过的主机的信息。这进一步降低了安全性，因为它消除了主机密钥验证的任何痕迹；</p><p><code>-tt</code>：这个选项强制SSH分配一个伪终端。即使执行的命令是非交互式的（如本例中的exit命令），也会分配伪终端。这在某些情况下很有用，例如确保远程命令的执行环境与交互式登录相似；</p><p><a href="mailto:&#x75;&#x73;&#101;&#x72;&#x40;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;">&#x75;&#x73;&#101;&#x72;&#x40;&#101;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;</a>：这是你想要连接的远程主机的用户名和地址；</p><p><code>&quot;exit&quot;</code>：这是在远程主机上执行的命令。在这个例子中，命令是exit，它将立即结束会话；</p><p><code>&amp;</code>：这个符号将SSH命令放入后台执行。这意味着你可以在本地机器上继续工作，而不必等待SSH会话结束</p>]]></content>
     
     
     <categories>
