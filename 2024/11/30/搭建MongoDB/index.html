@@ -29,10 +29,10 @@
 <meta property="og:description" content="搭建MongoDB 环境：Centos 7-2009  1. 创建MongoDB的国内yum源12345678# 下载Centos7对应最新版7.0.15的安装包cat &gt;&gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb.repo &lt;&lt; EOF[mongodb-org]name&#x3D;MongoDB Repositorybaseurl&#x3D;https:&#x2F;&#x2F;mirrors.cern">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-30T15:30:00.000Z">
-<meta property="article:modified_time" content="2024-12-10T15:40:31.311Z">
+<meta property="article:modified_time" content="2024-12-10T15:43:16.866Z">
 <meta property="article:author" content="smile smith">
-<meta property="article:tag" content="大数据">
 <meta property="article:tag" content="MongoDB">
+<meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -314,7 +314,7 @@
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 需要注意，需要支持AVX指令集的CPU才能启动MongoDB</span><br><span class="hljs-built_in">cat</span> /proc/cpuinfo | grep avx<br><span class="hljs-comment"># 若没有输出，则不支持AVX指令集，则无法使用MongoDB</span><br><br><span class="hljs-comment"># 开启MongoDB开机自启</span><br>systemctl <span class="hljs-built_in">enable</span> mongod<br><br><span class="hljs-comment"># 启动MongoDB</span><br>systemctl start mongod<br><br><span class="hljs-comment"># 查看MongoDB状态</span><br>systemctl status mongod<br><br><span class="hljs-comment"># 停止MongoDB</span><br>systemctl stop mongod<br></code></pre></td></tr></table></figure>
 
-<h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 对于MongoDB 6.0版本以上需要安装MongoDB-shell环境</span><br><span class="hljs-comment"># 对于MongoDB 7.0以上版本，使用mongosh进行连接</span><br>mongosh `主机名`:27017<br></code></pre></td></tr></table></figure>
+<h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 对于MongoDB 6.0版本以上需要安装MongoDB-shell环境</span><br><span class="hljs-comment"># 对于MongoDB 7.0以上版本，使用mongosh进行连接</span><br>mongosh 主机名:27017<br></code></pre></td></tr></table></figure>
 
 <h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
 <li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenlixiao007/article/details/110206062">https://blog.csdn.net/chenlixiao007/article/details/110206062</a></p>
@@ -359,9 +359,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
-      
         <a href="/tags/MongoDB/" class="print-no-link">#MongoDB</a>
+      
+        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" class="print-no-link">#大数据</a>
       
     </div>
   
