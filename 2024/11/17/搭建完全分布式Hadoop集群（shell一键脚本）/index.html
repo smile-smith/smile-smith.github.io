@@ -29,7 +29,7 @@
 <meta property="og:description" content="搭建完全分布式Hadoop集群（shell一键脚本） 本次实验环境：Centos 7-2009、Hadoop-3.1.4、JDK 8  准备工作1. 安装三台及以上的linux服务器 主机名随意取，只要便于区分节点的功能即可     主机名 IP地址    master 192.168.66.6   slave1 192.168.66.7   slave2 192.168.66.21    规划">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-17T02:39:00.000Z">
-<meta property="article:modified_time" content="2024-12-11T17:42:39.176Z">
+<meta property="article:modified_time" content="2024-12-12T09:52:42.151Z">
 <meta property="article:author" content="smile smith">
 <meta property="article:tag" content="大数据">
 <meta property="article:tag" content="Hadoop">
@@ -233,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.8k 字
+          2.9k 字
         
       </span>
     
@@ -244,7 +244,7 @@
         
         
         
-          24 分钟
+          25 分钟
         
       </span>
     
@@ -295,7 +295,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年12月12日 凌晨
+                    本文最后更新于 2024年12月12日 下午
                   
                 
               </p>
@@ -447,9 +447,15 @@
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">访问Yarn；地址：http://192.168.7:8088<br><br>这个地址是master的IP地址，端口号是8088<br></code></pre></td></tr></table></figure>
 
-<h2 id="使用hadoop计算数据"><a href="#使用hadoop计算数据" class="headerlink" title="使用hadoop计算数据"></a>使用hadoop计算数据</h2><h3 id="16-计算π的值"><a href="#16-计算π的值" class="headerlink" title="16. 计算π的值"></a>16. 计算π的值</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看Yarn当前可用的命令</span><br>yarn jar /opt/module/hadoop-3.1.4/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.4.jar<br><br><span class="hljs-comment"># 通过hadoop集群计算π的值</span><br>yarn jar /opt/module/hadoop-3.1.4/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.4.jar pi 10 10<br></code></pre></td></tr></table></figure>
+<h3 id="16-查看Hadoop进程"><a href="#16-查看Hadoop进程" class="headerlink" title="16. 查看Hadoop进程"></a>16. 查看Hadoop进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看master节点Hadoop启动的Java进程</span><br>jps <br><br><span class="hljs-comment"># Master节点会存在以下四个Java进程</span><br>NameNode DataNode NodeManager ResourceManager<br></code></pre></td></tr></table></figure>
 
-<h3 id="17-查看当前Yarn状态"><a href="#17-查看当前Yarn状态" class="headerlink" title="17. 查看当前Yarn状态"></a>17. 查看当前Yarn状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 通过命令行查看</span><br>yarn application -status application_任务戳<br><br><span class="hljs-comment"># 通过Web查看</span><br>http://192.168.66.6:8088/<br><span class="hljs-comment"># 这个IP是master的IP地址</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看slave1节点Hadoop启动的Java进程</span><br>ssh slave1 jps<br><br><span class="hljs-comment"># Slave1节点会存在以下三个Java进程</span><br>SecondaryNameNode DataNode NodeManager <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看slave2节点Hadoop启动的Java进程</span><br>ssh slave2 jps<br><br><span class="hljs-comment"># Slave2节点会存在以下两个个Java进程</span><br>DataNode NodeManager<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用hadoop计算数据"><a href="#使用hadoop计算数据" class="headerlink" title="使用hadoop计算数据"></a>使用hadoop计算数据</h2><h3 id="17-计算π的值"><a href="#17-计算π的值" class="headerlink" title="17. 计算π的值"></a>17. 计算π的值</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看Yarn当前可用的命令</span><br>yarn jar /opt/module/hadoop-3.1.4/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.4.jar<br><br><span class="hljs-comment"># 通过hadoop集群计算π的值</span><br>yarn jar /opt/module/hadoop-3.1.4/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.4.jar pi 10 10<br></code></pre></td></tr></table></figure>
+
+<h3 id="18-查看当前Yarn状态"><a href="#18-查看当前Yarn状态" class="headerlink" title="18. 查看当前Yarn状态"></a>18. 查看当前Yarn状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 通过命令行查看</span><br>yarn application -status application_任务戳<br><br><span class="hljs-comment"># 通过Web查看</span><br>http://192.168.66.6:8088/<br><span class="hljs-comment"># 这个IP是master的IP地址</span><br></code></pre></td></tr></table></figure>
 
 <hr>
 <h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
