@@ -29,7 +29,7 @@
 <meta property="og:description" content="搭建分布式Spark集群 本次实验环境：Centos 7-2009、Hadoop-3.1.4、JDK 8、Zookeeper-3.6.3、scala-2.11.5、Spark-3.2.1  功能规划   Master Slave1 Slave2    主节点(master) 工作节点(worker) 工作节点(worker)   192.168.66.6 192.168.66.7 192.168.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-29T04:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-13T08:10:31.348Z">
+<meta property="article:modified_time" content="2024-12-15T08:28:15.144Z">
 <meta property="article:author" content="smile smith">
 <meta property="article:tag" content="大数据">
 <meta property="article:tag" content="Spark">
@@ -295,7 +295,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年12月13日 下午
+                    本文最后更新于 2024年12月15日 下午
                   
                 
               </p>
@@ -351,7 +351,7 @@
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">根据自己节点的信息，或者查看~/.bashrc，修改下面各项的内容，随后复制粘贴即可<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt; spark-env.sh &lt;&lt; <span class="hljs-string">&quot;EOF&quot;</span><br><span class="hljs-comment"># 配置Spark主节点的IP或主机名</span><br><span class="hljs-built_in">export</span> SPARK_MASTER_IP=master<br><span class="hljs-comment"># 配置Scala的家目录</span><br><span class="hljs-built_in">export</span> SCALA_HOME=/opt/module/scala<br><span class="hljs-comment"># 配置Spark工作节点的内存大小</span><br><span class="hljs-built_in">export</span> SPARK_WORKER_MEMORY=4g<br><span class="hljs-comment"># 配置JAVA的家目录</span><br><span class="hljs-built_in">export</span> JAVA_HOME=/opt/module/jdk1.8.0_202<br><span class="hljs-comment"># 配置Hadoop的家目录</span><br><span class="hljs-built_in">export</span> HADOOP_HOME==/opt/module/hadoop-3.1.4<br><span class="hljs-comment"># 配置Hadoop的配置目录</span><br><span class="hljs-built_in">export</span> HADOOP_CONF_DIR==/opt/module/hadoop-3.1.4/etc/hadoop<br>EOF<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &gt;&gt; spark-env.sh &lt;&lt; <span class="hljs-string">&quot;EOF&quot;</span><br><span class="hljs-comment"># 配置Spark主节点的IP或主机名</span><br><span class="hljs-built_in">export</span> SPARK_MASTER_IP=master<br><span class="hljs-comment"># 配置Scala的家目录</span><br><span class="hljs-built_in">export</span> SCALA_HOME=/opt/module/scala<br><span class="hljs-comment"># 配置Spark工作节点的内存大小</span><br><span class="hljs-built_in">export</span> SPARK_WORKER_MEMORY=4g<br><span class="hljs-comment"># 配置JAVA的家目录</span><br><span class="hljs-built_in">export</span> JAVA_HOME=/opt/module/jdk1.8.0_202<br><span class="hljs-comment"># 配置Hadoop的家目录</span><br><span class="hljs-built_in">export</span> HADOOP_HOME=/opt/module/hadoop-3.1.4<br><span class="hljs-comment"># 配置Hadoop的配置目录</span><br><span class="hljs-built_in">export</span> HADOOP_CONF_DIR=/opt/module/hadoop-3.1.4/etc/hadoop<br>EOF<br></code></pre></td></tr></table></figure>
 
 <h3 id="6-编写spark工作节点的配置文件"><a href="#6-编写spark工作节点的配置文件" class="headerlink" title="6. 编写spark工作节点的配置文件"></a>6. 编写spark工作节点的配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 复制workers模板</span><br><span class="hljs-built_in">cp</span> workers.template workers<br></code></pre></td></tr></table></figure>
 
@@ -453,7 +453,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2024年12月13日</div>
+          <div>2024年12月15日</div>
         </div>
       
       
