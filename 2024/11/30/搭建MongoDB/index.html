@@ -29,7 +29,7 @@
 <meta property="og:description" content="搭建MongoDB 环境：Centos 7-2009  1. 创建MongoDB的国内yum源12345678# 下载Centos7对应最新版7.0.15的安装包cat &gt;&gt; &#x2F;etc&#x2F;yum.repos.d&#x2F;mongodb.repo &lt;&lt; &quot;EOF&quot;[mongodb-org]name&#x3D;MongoDB Repositorybaseurl&#x3D;https:&#x2F;&#x2F;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-30T15:30:00.000Z">
-<meta property="article:modified_time" content="2024-12-15T16:18:28.409Z">
+<meta property="article:modified_time" content="2024-12-16T09:03:52.481Z">
 <meta property="article:author" content="smile smith">
 <meta property="article:tag" content="大数据">
 <meta property="article:tag" content="MongoDB">
@@ -233,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          256 字
+          259 字
         
       </span>
     
@@ -295,7 +295,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年12月16日 凌晨
+                    本文最后更新于 2024年12月16日 下午
                   
                 
               </p>
@@ -314,7 +314,9 @@
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 需要注意，需要支持AVX指令集的CPU才能启动MongoDB</span><br><span class="hljs-built_in">cat</span> /proc/cpuinfo | grep avx<br><span class="hljs-comment"># 若没有输出，则不支持AVX指令集，则无法使用MongoDB</span><br><br><span class="hljs-comment"># 开启MongoDB开机自启</span><br>systemctl <span class="hljs-built_in">enable</span> mongod<br><br><span class="hljs-comment"># 启动MongoDB</span><br>systemctl start mongod<br><br><span class="hljs-comment"># 查看MongoDB状态</span><br>systemctl status mongod<br><br><span class="hljs-comment"># 停止MongoDB</span><br>systemctl stop mongod<br></code></pre></td></tr></table></figure>
 
-<h2 id="3-连接数据库"><a href="#3-连接数据库" class="headerlink" title="3. 连接数据库"></a>3. 连接数据库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 对于MongoDB 6.0版本以上需要安装MongoDB-shell环境</span><br><span class="hljs-comment"># 对于MongoDB 7.0以上版本，使用mongosh进行连接</span><br>mongosh 主机名或者IP<br></code></pre></td></tr></table></figure>
+<h2 id="3-连接数据库"><a href="#3-连接数据库" class="headerlink" title="3. 连接数据库"></a>3. 连接数据库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 重启MongoDB</span><br>systemctl restart mongod<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 对于MongoDB 6.0版本以上需要安装MongoDB-shell环境</span><br><span class="hljs-comment"># 对于MongoDB 7.0以上版本，使用mongosh进行连接</span><br>mongosh 主机名或者IP<br></code></pre></td></tr></table></figure>
 
 <h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
 <li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenlixiao007/article/details/110206062">https://blog.csdn.net/chenlixiao007/article/details/110206062</a></p>
