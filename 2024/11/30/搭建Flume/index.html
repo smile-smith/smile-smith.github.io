@@ -21,15 +21,15 @@
   <meta name="author" content="smile smith">
   <meta name="keywords" content="">
   
-    <meta name="description" content="搭建Flume 本次实验环境：Centos 7-2009、JDK 8、Flume-1.11.0  开始安装1. 下载安装文件到服务器12345# 使用wget命令下载flume文件wget -P &#x2F;tmp&#x2F; -c &#x27;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;apache&#x2F;flume&#x2F;1.11.0&#x2F;apache-flume-1.11.0-bin.tar.gz&#x27;# 使用">
+    <meta name="description" content="搭建Flume 本次实验环境：Centos 7-2009、JDK 8、Flume-1.11.0  开始安装1. 下载安装文件到服务器12345# 使用wget命令下载flume文件（二选一）wget -P &#x2F;tmp&#x2F; -c &#x27;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;apache&#x2F;flume&#x2F;1.11.0&#x2F;apache-flume-1.11.0-bin.tar.gz&amp;#x27">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建Flume">
 <meta property="og:url" content="https://smile-smith.github.io/2024/11/30/%E6%90%AD%E5%BB%BAFlume/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="搭建Flume 本次实验环境：Centos 7-2009、JDK 8、Flume-1.11.0  开始安装1. 下载安装文件到服务器12345# 使用wget命令下载flume文件wget -P &#x2F;tmp&#x2F; -c &#x27;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;apache&#x2F;flume&#x2F;1.11.0&#x2F;apache-flume-1.11.0-bin.tar.gz&#x27;# 使用">
+<meta property="og:description" content="搭建Flume 本次实验环境：Centos 7-2009、JDK 8、Flume-1.11.0  开始安装1. 下载安装文件到服务器12345# 使用wget命令下载flume文件（二选一）wget -P &#x2F;tmp&#x2F; -c &#x27;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;apache&#x2F;flume&#x2F;1.11.0&#x2F;apache-flume-1.11.0-bin.tar.gz&amp;#x27">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-30T15:59:00.000Z">
-<meta property="article:modified_time" content="2024-12-15T16:53:42.586Z">
+<meta property="article:modified_time" content="2024-12-19T06:39:05.005Z">
 <meta property="article:author" content="smile smith">
 <meta property="article:tag" content="大数据">
 <meta property="article:tag" content="Flume">
@@ -233,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          856 字
+          864 字
         
       </span>
     
@@ -295,7 +295,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年12月16日 凌晨
+                    本文最后更新于 2024年12月19日 下午
                   
                 
               </p>
@@ -306,7 +306,7 @@
                 <h1 id="搭建Flume"><a href="#搭建Flume" class="headerlink" title="搭建Flume"></a>搭建Flume</h1><ul>
 <li>本次实验环境：Centos 7-2009、JDK 8、Flume-1.11.0</li>
 </ul>
-<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="1-下载安装文件到服务器"><a href="#1-下载安装文件到服务器" class="headerlink" title="1. 下载安装文件到服务器"></a>1. 下载安装文件到服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用wget命令下载flume文件</span><br>wget -P /tmp/ -c <span class="hljs-string">&#x27;https://mirrors.aliyun.com/apache/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz&#x27;</span><br><br><span class="hljs-comment"># 使用curl命令下载flume文件</span><br>curl -C - <span class="hljs-string">&#x27;https://mirrors.aliyun.com/apache/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz&#x27;</span> -O /tmp/<br></code></pre></td></tr></table></figure>
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="1-下载安装文件到服务器"><a href="#1-下载安装文件到服务器" class="headerlink" title="1. 下载安装文件到服务器"></a>1. 下载安装文件到服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用wget命令下载flume文件（二选一）</span><br>wget -P /tmp/ -c <span class="hljs-string">&#x27;https://mirrors.aliyun.com/apache/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz&#x27;</span><br><br><span class="hljs-comment"># 使用curl命令下载flume文件（二选一）</span><br>curl -C - <span class="hljs-string">&#x27;https://mirrors.aliyun.com/apache/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz&#x27;</span> -O /tmp/<br></code></pre></td></tr></table></figure>
 
 <h3 id="2-安装程序"><a href="#2-安装程序" class="headerlink" title="2. 安装程序"></a>2. 安装程序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 解压文件到指定文件夹</span><br>tar -zxvf /tmp/apache-flume-1.11.0-bin.tar.gz -C /opt/module/<br><br><span class="hljs-comment"># 重命名文件夹</span><br><span class="hljs-built_in">mv</span> /opt/module/apache-flume-1.11.0-bin /opt/module/flume<br></code></pre></td></tr></table></figure>
 
@@ -414,7 +414,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2024年12月16日</div>
+          <div>2024年12月19日</div>
         </div>
       
       
